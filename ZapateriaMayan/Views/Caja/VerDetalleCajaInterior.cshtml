@@ -1,0 +1,378 @@
+﻿@model  ZapateriaMayan.ViewModels.CajaInteriorViewModel
+@{ ViewBag.Title = "Apertura de Caja - Interior";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    decimal Gastos = 0, Ingresos = 0;}
+
+
+@Html.Partial("_Mensaje")
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+<br />
+<br />
+
+@if (Model.CajaInterior.EstadoCaja)
+{
+    using (Html.BeginForm())
+    {
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-7" style="float:none;margin:auto;">
+                <!-- general form elements -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Acciones caja - Interior</h3>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="ml-3 mr-3">
+                                <a data-toggle="modal" data-target="#exampleModalLong" class="btn btn-warning text-white"><i class="fas fa-money-check-alt"></i> &nbsp; Nuevo Ingreso</a>
+
+                            </div>
+                            <br /><br />
+                            <div class="">
+                                <a data-toggle="modal" data-target="#exampleModalE" class="btn btn-danger text-white"><i class="fas fa-sign-out-alt"></i> &nbsp; Nuevo Egreso</a>
+
+                            </div>
+                            <br /><br />
+                            <div class="ml-3">
+
+                                <a data-toggle="modal" data-target="#modalClose" class="btn btn-warning text-white"><i class="fas fa-window-close"></i> &nbsp; Cierre Caja</a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+</section>}
+            }
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="card  bg-gradient-white">
+            <div class="card-body">
+                <div class="row">
+
+                </div>
+                <table id="CajaInteriord" class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th># de Venta</th>
+                            <th>Descripción</th>
+                            <th>Gasto</th>
+                            <th>Ingreso</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.CajaInterior.DetalleCajaInterior)
+                        {
+                            Gastos += item.Gasto;
+                            Ingresos += item.Ingreso;
+
+            <tr>
+                <td>
+                    @if (item.VentasInteriorId == null)
+                    {
+    <span> x </span> }
+else
+{
+
+<span> @item.VentasInteriorId</span>}
+
+                </td>
+
+                <td>@item.Descripcion</td>
+                <td>@item.Gasto</td>
+                <td>@item.Ingreso</td>
+
+
+            </tr>}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th># de Venta</th>
+                            <th>Descripción</th>
+                            <th>Gasto</th>
+                            <th>Ingreso</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <div class="row">
+        <!-- accepted payments column -->
+        <div class="col-3">
+
+        </div>
+        <!-- /.col -->
+        <div class="col-9">
+            <p class="lead">Monto cierre</p>
+
+            <div class="table-responsive">
+                <table class="table">
+                    <tr>
+                        <th style="width:50%">Total Egresos:</th>
+
+                        <td>Q @Gastos</td>
+                    </tr>
+                    <tr>
+                        <th>Total Ingresos:</th>
+                        <td>Q @Ingresos</td>
+                    </tr>
+                    <tr class="bg-teal">
+                        <th>Total:</th>
+                        @{ decimal Total = Ingresos - Gastos; }
+                        <td><b>Q @Total </b></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <!-- /.col -->
+    </div>
+
+</section>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-gradient-warning">
+                <h5 class="modal-title" id="exampleModalLongTitle">Agregar Ingreso</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+
+
+                    <div class="col-sm-9">
+                        <div class="form-group">
+                            <label> Descripción</label>
+                            <textarea id="Descripcion" class="form-control" type="text" rows="1"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label> Monto </label>
+                            <input id="Monto" class="form-control" type="number" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="AddDetailButton" onclick="AddDetailI()">Agregar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalE" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-gradient-danger">
+                <h5 class="modal-title" id="exampleModalLongTitle">Agregar Egreso</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+
+
+                    <div class="col-sm-9">
+                        <div class="form-group">
+                            <label> Descripción</label>
+                            <textarea id="DescripcionE" class="form-control" type="text" rows="1"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label> Monto </label>
+                            <input id="MontoE" class="form-control" type="number" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="AddDetailButtonE" onclick="AddDetailE()">Agregar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalClose" tabindex="-1" role="dialog" aria-labelledby="modalClose" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-gradient-danger">
+                <h5 class="modal-title" id="exampleModalLongTitle">Cierre de Caja</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <h5>¿Esta seguro de querer cerrar la caja?</h5>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="buttonCerrar" onclick="cerrarCaja()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Scripts/dataTables.responsive.min.js"></script>
+    <script src="~/Scripts/select2.full.min.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+
+    <script src="~/Scripts/daterangepicker.js"></script>
+    <script src="~/Scripts/tempusdominus-bootstrap-4.min.js"></script>
+
+    <script>
+        $("#CajaInteriord").DataTable({
+            "responsive": true,
+            "autoWidth": false,
+        });</script>
+
+
+
+    <script>
+        function AddDetailI() {
+            $("#AddDetailButton").prop('disabled', true)
+
+            var data = {
+                monto: $('#Monto').val(),
+                descripcion: $('#Descripcion').val()
+            };
+
+            $.ajax({
+                type: "post",
+                url: '@Url.Action("AgregarIngreso","Caja")',
+                data: data,
+                contenttype: 'application/json; charset=utf-8',
+                datatype: 'json',
+                error: function () {
+                    alert("No se ha podido insertar el dato.");
+                    $('#exampleModalLong').modal('hide');
+                    $("#AddDetailButton").prop('disabled', false)
+                },
+                success: function (result) {
+                    alert("Ingreso insertado exitosamente.");
+                    $("#AddDetailButton").prop('disabled', false)
+                    $('#exampleModalLong').modal('hide');
+                    location.reload();
+                }
+            });
+
+        }
+
+
+        function AddDetailE() {
+            $("#AddDetailButtonE").prop('disabled', true)
+
+            var data = {
+                monto: $('#MontoE').val(),
+                descripcion: $('#DescripcionE').val()
+            };
+
+            $.ajax({
+                type: "post",
+                url: '@Url.Action("AgregarEgreso","Caja")',
+                data: data,
+                contenttype: 'application/json; charset=utf-8',
+                datatype: 'json',
+                error: function () {
+                    alert("No se ha podido insertar el dato.");
+                    $('#exampleModalLong').modal('hide');
+                    $("#AddDetailButtonE").prop('disabled', false)
+                },
+                success: function (result) {
+                    alert("Ingreso insertado exitosamente.");
+                    $("#AddDetailButtonE").prop('disabled', false)
+                    $('#exampleModalLong').modal('hide');
+                    location.reload();
+                }
+            });
+
+        }
+
+
+        function cerrarCaja() {
+            $("#buttonCerrar").prop('disabled', true)
+
+
+            $.ajax({
+                type: "post",
+                url: '@Url.Action("CerrarCaja","Caja")',
+                data: '',
+                contenttype: 'application/json; charset=utf-8',
+                datatype: 'json',
+                error: function () {
+                    alert("No se ha podido cerrar la caja.");
+                    $('#modalClose').modal('hide');
+                    $("#buttonCerrar").prop('disabled', false)
+                },
+                success: function (result) {
+                    alert("Se ha cerrado la caja exitosamente.");
+                    $("#modalClose").prop('disabled', false)
+                    $('#exampleModalLong').modal('hide');
+                    location.reload();
+                }
+            });
+
+        }
+
+    </script>
+
+}
+
+@section select2{
+    <link rel="stylesheet" href="~/Content/select2.min.css">
+    <link rel="stylesheet" href="~/Content/daterangepicker.css">
+
+}

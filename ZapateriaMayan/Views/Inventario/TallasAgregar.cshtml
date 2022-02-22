@@ -1,0 +1,112 @@
+﻿@model  ZapateriaMayan.ViewModels.TallaViewModel
+
+
+@{ ViewBag.Title = "Tallas Inventario";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+
+
+
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Tallas</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Contactos</a></li>
+                    <li class="breadcrumb-item active">lista</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+        @*<div class="row mb-2">
+                <div class="col-12">
+                    <a href="@Url.Action("NuevoCliente","Clientes")" class="btn btn-primary">Guardar</a>
+                    <a href="@Url.Action("Contactos", "Clientes")" class="btn btn-outline-danger">Cancelar</a>
+                </div>
+            </div>*@
+
+
+    </div>
+</div>
+
+@using (Html.BeginForm("TallasAgregar", "Inventario"))
+{
+@Html.HiddenFor(m => m.Producto)
+                @Html.HiddenFor(m => m.Ids)
+
+
+                                <section class="content">
+
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="card card-teal">
+                                                    <div class="card-header">
+                                                        <h3 class="card-title">Nuevo Talla</h3>
+                                                    </div>
+                                                    <!-- /.card-header -->
+                                                    <!-- form start -->
+                                                    <form role="form">
+
+                                                        <div class="card-body">
+                                                            <div class="row">
+
+                                                                <div class="col-md-6">
+                                                                    @for (int i = 0; i < Model.Tallitas.Count; i++)
+                                                                    {
+
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Talla</label>
+                                                            @Html.TextBoxFor(s => s.Tallitas[i].NombreTalla, new { @class = "form-control", @placeholder = "Talla" })
+                                                            @Html.ValidationMessageFor(s => s.Tallitas[i].NombreTalla, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>}
+                                                                </div>
+
+                                                                <div class="col-md-6">
+
+
+                                                                    @for (int i = 0; i < Model.Detallitos.Count; i++)
+                                                                    {
+
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group">
+                                                            <label>Stock</label>
+                                                            @Html.TextBoxFor(s => s.Detallitos[i].Stock, new { @class = "form-control", @placeholder = "Talla" })
+
+                                                        </div>
+                                                    </div>}
+                                                                </div>
+
+
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- /.card-body -->
+
+                                                        <div class="card-footer">
+                                                            <button type="submit" class="btn btn-primary">Guardar</button>
+
+                                                            <a href="@Url.Action("DetalleTalla", "Inventario")" class="btn btn-outline-danger">Cancelar</a>
+                                                        </div>
+                                                    </form>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>}
+
+
+@section scripts{
+
+    @*<script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>*@
+
+}
+
+

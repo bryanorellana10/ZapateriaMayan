@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewBag.Title = "NuevaSolicitud";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+    <section class="content">
+
+        <div class="container-fluid">
+            <br />
+            <div class="row">
+                <div class="col-md-10" style="float:none;margin:auto;">
+                    <div class="card card-navy">
+                        <div class="card-header">
+                            <h3 class="card-title">Datos solicitud</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+
+                        <div class="card">
+
+                            <div class="card-header">
+
+                                <button class="btn btn-primary btn-sm float-right" id="mandar-solicitud">Ingresar</button>
+                            </div>
+                            <div class="card-body">
+
+                                <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal-xl-solicitudes">
+                                    <i class="fas fa-plus-square"></i> &nbsp; Agregar producto
+                                </button>
+                                <br /><br />
+
+                                <div class="card-body p-0">
+                                    <table class="table table-sm" id="mytablec-solicitudes">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:1px">Cod.</th>
+                                                <th>Descripción</th>
+                                                <th style="width:115px;">Talla</th>
+                                                <th style="width:1px; display:none">Val</th>
+                                                <th style="width:150px;">Color</th>
+                                                <th style="width:60px;">Acción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="detallesolicitud"></tbody>
+                                    </table>
+                                </div>
+
+
+
+
+                            </div>
+                            <!-- /.card-body -->
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+
+@section select2{
+    <link rel="stylesheet" href="~/Content/select2.min.css">
+    <link rel="stylesheet" href="~/Content/daterangepicker.css">
+
+}
+
+
+

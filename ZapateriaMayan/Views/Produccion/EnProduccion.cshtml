@@ -1,0 +1,171 @@
+﻿
+@{
+    ViewBag.Title = "Contactos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Todos los productos en producción</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Producción</a></li>
+                    <li class="breadcrumb-item active">En producción</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+        @*<div class="row mb-2">
+                <div class="col-12">
+                    <a href="@Url.Action("Nueva Produccion","Produccion")" class="btn btn-primary">Crear</a>
+                </div>
+            </div>*@
+
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">En producción</h3>
+                <div>
+                    <a href="" class="btn btn-outline-primary btn-xs float-right" style="margin:0.2em">
+                        <i class="fas fa-th-large"></i>
+                    </a>
+                    <a href="" class="btn btn-primary btn-xs float-right" style="margin: 0.2em">
+                        <i class="fas fa-list "></i>
+                    </a>
+                </div>
+
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Imagen</th>
+                            <th>Talla</th>
+                            <th>Color</th>
+                            <th>Cliente</th>
+                            <th>Estado</th>
+                            <th>Observación</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Ceiba Azul</td>
+                            <td>
+                                <img src="~/Images/products/CEIBAL-AZUL.jpg" width="120" />
+                            </td>
+                            <td>32.5</td>
+                            <td> Amarillo </td>
+                            <td> Sara de León </td>
+                            <td> <span class="bg-danger" style="padding:0.2em; border-radius:5px">En producción</span></td>
+                            <td> Fabricar igual a la imagen</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>Ceiba Azul</td>
+                            <td>
+                                <img src="~/Images/products/CEIBAL-AZUL.jpg" width="120" />
+                            </td>
+                            <td>32.5</td>
+                            <td> Amarillo </td>
+                            <td> Sara de León </td>
+                            <td> <span class="bg-danger" style="padding:0.2em; border-radius:5px">En producción</span></td>
+                            <td> Fabricar igual a la imagen</td>
+                        </tr>
+                        <tr>
+                            <td>Ceiba Azul</td>
+                            <td>
+                                <img src="~/Images/products/CEIBAL-AZUL.jpg" width="120" />
+                            </td>
+                            <td>32.5</td>
+                            <td> Amarillo </td>
+                            <td> Sara de León </td>
+                            <td> <span class="bg-danger" style="padding:0.2em; border-radius:5px">En producción</span></td>
+                            <td> Fabricar igual a la imagen</td>
+                        </tr>
+                        <tr>
+                            <td>Ceiba Azul</td>
+                            <td>
+                                <img src="~/Images/products/CEIBAL-AZUL.jpg" width="120" />
+                            </td>
+                            <td>32.5</td>
+                            <td> Amarillo </td>
+                            <td> Sara de León </td>
+                            <td> <span class="bg-danger" style="padding:0.2em; border-radius:5px">En producción</span></td>
+                            <td> Fabricar igual a la imagen</td>
+                        </tr>
+                        <tr>
+                            <td>Ceiba Azul</td>
+                            <td>
+                                <img src="~/Images/products/CEIBAL-AZUL.jpg" width="120" />
+                            </td>
+                            <td>32.5</td>
+                            <td> Amarillo </td>
+                            <td> Sara de León </td>
+                            <td> <span class="bg-danger" style="padding:0.2em; border-radius:5px">En producción</span></td>
+                            <td> Fabricar igual a la imagen</td>
+                        </tr>
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Imagen</th>
+                            <th>Talla</th>
+                            <th>Color</th>
+                            <th>Cliente</th>
+                            <th>Estado</th>
+                            <th>Observación</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+@section scripts{
+
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Scripts/dataTables.responsive.min.js"></script>
+
+
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+            });
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
+}

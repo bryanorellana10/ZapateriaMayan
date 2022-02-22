@@ -1,0 +1,165 @@
+﻿@model ZapateriaMayan.ViewModels.DespachosCapitalViewModel
+@{ ViewBag.Title = "NuevoDespachoInterior";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+
+@Html.Partial("_Mensaje")
+@using (Html.BeginForm())
+{
+<br />
+                <br />
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6" style="float:none;margin:auto;">
+                            <!-- general form elements -->
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Datos de despacho</h3>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label>Pedido #</label>
+                                                @Html.TextBoxFor(m => m.Pedido.Id, new { @class = "form-control", @readonly = true })
+                                            </div>
+                                        </div>
+
+                                        @*<div class="col-12">
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1">Número de Guía</label>
+                                                @Html.TextBoxFor(m => m.DespachosInterior.NumeroGuia, new { @class = "form-control", @placeholder = "Número de Guía" })
+                                            </div>
+                                        </div>*@
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Ruta</label>
+                                                @Html.DropDownListFor(m => m.EnviosCapital.RutasId, Model.ListaRutas, "Seleccione", new { @class = "form-control select2" })
+                                                @Html.ValidationMessageFor(m => m.EnviosCapital.RutasId, "", new { @class = "text-danger" })
+                                                @*@Html.TextBoxFor(m => m.DespachosInterior.Peso, new { @class = "form-control" })*@
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Costo Ruta</label>
+                                                @Html.TextBoxFor(m => m.EnviosCapital.EgresoEntrega, new { @class = "form-control"})
+
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label>Mensajero</label>
+                                                @Html.DropDownListFor(m => m.EnviosCapital.DespachadorId, Model.ListaMensajeros, "Seleccione", new { @class = "form-control select2" })
+                                                @Html.ValidationMessageFor(m => m.EnviosCapital.DespachadorId, "", new { @class = "text-danger" })
+                                                @*@Html.TextBoxFor(m => m.DespachosInterior.Peso, new { @class = "form-control" })*@
+                                            </div>
+                                        </div>
+
+                                        @*<div class="col-6">
+
+            <div class="form-group">
+                <label>Fecha programada</label>
+
+                <div class="input-group mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="far fa-clock"></i></span>
+                    </div>
+                    <input type="text" class="form-control float-right fecha-entregacr" id="reservationtime5">
+                </div>
+                <button class="btn btn-warning btn-xs float-right">Actualizar</button>
+            </div>
+        </div>*@
+
+
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="col-12 ">
+                                            <div class="form-group">
+                                                <label>Observación </label>
+                                                @Html.TextAreaFor(m => m.DespachosCapital.Comentario, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary">Enviar</button>
+                                </div>
+                            </div>
+
+                        </div>
+                      
+
+                    </div>
+                </div>
+            </section>
+}
+
+
+@section scripts{
+
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Scripts/dataTables.responsive.min.js"></script>
+    <script src="~/Scripts/select2.full.min.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+
+    <script src="~/Scripts/daterangepicker.js"></script>
+    <script src="~/Scripts/tempusdominus-bootstrap-4.min.js"></script>
+
+    <script>
+        $(function () {
+            $('.select2').select2()
+
+        });
+
+
+         $('#reservationtime5').daterangepicker({
+            timePicker: true,
+            timePickerIncrement: 30,
+            locale: {
+                format: 'MM/DD/YYYY hh:mm A'
+            },
+            startDate: '@Model.Pedido.Inicio.ToString("MM/dd/yyyy hh:mm tt")',
+            endDate: '@Model.Pedido.Final.ToString("MM/dd/yyyy hh:mm tt")'
+         });
+
+
+        $("#EnviosCapital_RutasId").on('change', function () {
+            var value = { value: $(this).val() }
+
+
+            $.ajax({
+                type: "post",
+                data: value,
+                url: '@Url.Action("EliminarDetalleCapital", "Caja")',
+                contenttype: 'application/json; charset=utf-8',
+                datatype: 'json',
+                url: '@Url.Action("GetValueRuta", "Despachos")',
+                success: function (result, state) {
+                    $('#EnviosCapital_EgresoEntrega').val(result[0].Costo)
+
+                }
+
+            });
+        });
+
+
+    </script>
+
+}
+@section select2{
+    <link rel="stylesheet" href="~/Content/select2.min.css">
+    <link rel="stylesheet" href="~/Content/daterangepicker.css">
+
+}

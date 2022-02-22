@@ -1,0 +1,157 @@
+﻿@model IEnumerable<CapaBaseDeDatos.Models.Producto>
+@{
+    ViewBag.Title = "Productos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Inventario</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Inventario</a></li>
+                    <li class="breadcrumb-item active">lista</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+        <div class="row mb-2">
+            <div class="col-12">
+                <a href="@Url.Action("NuevoProducto","Inventario")" class="btn btn-primary">Nuevo Producto</a>
+                @*<a href="#" class="btn btn-outline-primary">Importar</a>*@
+            </div>
+        </div>
+     
+
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Lista de Productos</h3>
+                <div>
+                    <a href="" class="btn btn-outline-primary btn-xs float-right" style="margin:0.2em">
+                        <i class="fas fa-th-large"></i>
+                    </a>
+                    <a href="" class="btn btn-primary btn-xs float-right" style="margin: 0.2em">
+                        <i class="fas fa-list "></i>
+                    </a>
+                </div>
+
+            </div>
+            <!-- /.card-header -->
+
+            @*<div class="card-header">
+                <button class="btn btn-primary btn-xs"><i class="fas fa-plus-square"></i> &nbsp; Solicitar a Producción</button>
+            </div>*@
+            <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Imagen</th>
+                
+                            <th>Stock</th>
+                            <th>Categoría</th>
+                            <th>Sub-Categoría</th>
+                            <th>Observaciones</th>
+                            <th>Precio</th>
+                            <th>Estado</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var producto in Model)
+                        {
+                            var suma = 0;
+
+
+                        <tr onclick="location.href ='@Url.Action("DetallesProducto", "Inventario", new { id = producto.Id})'">
+                            <td>@producto.NombreProducto</td>
+                            <td>
+                                <img src="~/Images/@producto.Imagen" height="100" />
+                            </td>
+                       
+                            <td>
+
+                                @foreach (var item in producto.DetalleTallas.Where(a => a.Talla.EstadoTallaa == false))
+                                {
+                                    suma += item.Stock;
+
+                                }
+                                
+                                <strong>@suma</strong> 
+
+
+
+                            </td>
+                            <td>@producto.Categoria.NombreC</td>
+                            <td>@producto.Categoria1</td>
+                            <td>@producto.Observaciones</td>
+                            <td>@producto.Precio</td>
+                            <td>
+                                        @*<a class="btn btn-primary btn-xs" href="@Url.Action("ModificarContacto", "Clientes", new { id = cliente.Id})"><i class="fas fa-edit"></i></a>*@
+                                <a class="btn btn-danger btn-xs" href="@Url.Action("EliminarProducto","Inventario", new { id = producto.Id})"><i class="fas fa-trash-alt"></i></a>
+                            </td>
+
+                        </tr>
+                    }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Imagen</th>
+                                <th>Stock</th>
+                                <th>Categoría</th>
+                                <th>Sub-Categoría</th>
+                                <th>Observaciones</th>
+                                <th>Precio</th>
+                                <th>Estado</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+@section scripts{
+
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Scripts/dataTables.responsive.min.js"></script>
+
+
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                                    "responsive": true,
+                "autoWidth": false,
+            });
+            $('#example2').DataTable({
+                                    "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+                            });
+    </script>
+}

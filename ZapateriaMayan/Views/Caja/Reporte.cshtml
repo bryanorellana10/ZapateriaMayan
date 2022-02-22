@@ -1,0 +1,77 @@
+﻿@model ZapateriaMayan.ViewModels.CajaCapitalViewModel
+
+@{ ViewBag.Title = "ReporteCaja";
+    Layout = "~/Views/Shared/_LayoutPedidoDetalle.cshtml";
+    decimal SumatoriaMonto = 0, SumatoriaGasto = 0, SumatoriaIngresos = 0, SumatoriaTotal = 0;}
+
+
+<div style="padding-left: 2%;padding-right: 2%">
+    <img src="~/Images/logoss.jpg" />
+    <h1>Reporte Caja</h1>
+
+    <table class="table table-bordered" style="padding-left:20px;padding-right:20px">
+        <tr>
+            <th>Fecha Apertura</th>
+            <th>Monto Apertura</th>
+            <th>Gastos</th>
+            <th>Ingresos</th>
+            <th>Total Cierre</th>
+            <th>Responsable</th>
+        </tr>
+
+        @foreach (var item in Model.CajaCapitalsList)
+        {
+            SumatoriaMonto = SumatoriaMonto + item.MontoApertura;
+    <tr>
+        <td>@item.FechaApertura</td>
+        <td>Q @item.MontoApertura</td>
+
+        <td>
+
+            @{decimal egresos = 0.00M;
+
+                foreach (var gastos in item.DetalleCajaCapitals)
+                {
+                    SumatoriaGasto = SumatoriaGasto + gastos.Gasto;
+                    egresos = egresos + gastos.Gasto;
+
+                }}
+            Q @egresos
+        </td>
+        <td>
+            @{decimal ingresos = 0.00M;
+
+                foreach (var ingres in item.DetalleCajaCapitals)
+                {
+                    SumatoriaIngresos = SumatoriaIngresos + ingres.Ingreso;
+                            ingresos = ingresos + ingres.Ingreso;
+
+                }}
+            Q @ingresos
+
+        </td>
+        <td>
+            @{ var total = ingresos - egresos;
+                SumatoriaTotal = SumatoriaTotal + total;}
+            Q @total
+        </td>
+        <td>@item.Responsable</td>
+    </tr>}
+
+    <tr>
+        <td><strong>TOTAL</strong></td>
+        <td>Q @SumatoriaMonto</td>
+        <td>Q @SumatoriaGasto</td>
+        <td>Q @SumatoriaIngresos</td>
+        <td>Q @SumatoriaTotal</td>
+        <td><strong></strong></td>
+    </tr>
+
+
+
+    </table>
+
+   
+
+
+</div>

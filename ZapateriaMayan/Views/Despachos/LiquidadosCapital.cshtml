@@ -1,0 +1,111 @@
+﻿@model IEnumerable<CapaBaseDeDatos.Models.EnviosCapital>
+
+@{ ViewBag.Title = "Contactos";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Envíos liquidados - Capital</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Despachos</a></li>
+                    <li class="breadcrumb-item active">Liquidados Capital</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+        <div class="row mb-2">
+            <div class="col-12">
+            </div>
+        </div>
+
+
+    </div>
+</section>
+
+<!-- Main content -->
+<div class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Lista</h3>
+                <div>
+                    <a href="" class="btn btn-outline-primary btn-xs float-right" style="margin:0.2em">
+                        <i class="fas fa-th-large"></i>
+                    </a>
+                    <a href="" class="btn btn-primary btn-xs float-right" style="margin: 0.2em">
+                        <i class="fas fa-list "></i>
+                    </a>
+                </div>
+
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th># Pedido</th>
+                            <th>Fecha Salida</th>
+                            <th>Estado</th>
+                            <th>Vendedor</th>
+                            <th>Observación</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+            <tr onclick="location.href = '@Url.Action("DetallePedido", "Pedidos", new { id = item.DespachosCapital.PedidoId })'">
+                <td>@item.DespachosCapital.PedidoId</td>
+                <td>@item.DespachosCapital.InicioCapital</td>
+                <td>@item.EstadoEnvioCapital.Estado</td>
+                <td>(pendiente)</td>
+                <td>@item.DespachosCapital.Comentario</td>
+                <td class="text-center">
+
+                    @*<a class="btn btn-primary btn-xs" href="@Url.Action("ModificarContacto", "Clientes", new { id = cliente.Id})"><i class="fas fa-edit"></i></a>*@
+                    <a class="btn btn-danger btn-xs" href="@Url.Action("","", new { })"><i class="fas fa-trash-alt"></i></a>
+
+                </td>
+            </tr>
+}
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th># Pedido</th>
+                            <th>Fecha Salida</th>
+                            <th>Estado</th>
+                            <th>Vendedor</th>
+                            <th>Observación</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+@section scripts{
+
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Scripts/dataTables.responsive.min.js"></script>
+
+
+    <script>$(function () {
+            $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "ordering": false,
+            });
+
+        });</script>
+}

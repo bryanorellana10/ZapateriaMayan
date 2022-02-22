@@ -1,0 +1,49 @@
+﻿@model ZapateriaMayan.ViewModels.MensajerosYRutasRutasViewModel
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-teal">
+                    <div class="card-header">
+                        <h3 class="card-title">Nuevo Ruta</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form role="form">
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="form-group">
+                                        <label>Nombre Ruta</label>
+                                        @Html.TextBoxFor(m => m.Ruta.Descripcion, new { @class = "form-control", @placeholder = "Nombre Ruta" })
+                                        @Html.ValidationMessageFor(m => m.Ruta.Descripcion, "", new { @class = "text-danger" })
+                                        @*<input class="form-control" placeholder="Nombres">*@
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>Costo Ruta</label>
+                                        @Html.TextBoxFor(m => m.Ruta.Costo, new { @class = "form-control", @placeholder = "Costo Ruta" })
+                                        @Html.ValidationMessageFor(m => m.Ruta.Costo, "", new { @class = "text-danger" })
+                                        @*<input class="form-control" placeholder="Nombres">*@
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <a href="@Url.Action("TodasLasRutas", "MensajeroYRutas")" class="btn btn-outline-danger">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

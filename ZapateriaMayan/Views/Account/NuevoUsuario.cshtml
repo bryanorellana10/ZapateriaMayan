@@ -1,0 +1,80 @@
+﻿@model  ZapateriaMayan.ViewModels.AccountRegisterViewModel
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-teal">
+                    <div class="card-header">
+                        <h3 class="card-title">Nuevo Usuario</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form role="form">
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
+                                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                        @*<input class="form-control" placeholder="Nombres">*@
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Usuario</label>
+                                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Nombres" })
+                                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label> Contraseña </label>
+                                        @Html.TextBoxFor(m => m.Password, new { @class = "form-control", @type = "password", @placeholder = "Contraseña" })
+                                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label> Confirmar contraseña </label>
+                                        @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control", @type = "password", @placeholder = " Confirmar Contraseña" })
+                                        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class=" col-md-6">
+                                    <label>Rol</label>
+                                    @Html.DropDownListFor(m => m.Role, Model.RoleList, new { @class = "form-control" })
+                                   
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <a href="@Url.Action("MantenimientoUsuarios", "Account")" class="btn btn-outline-danger">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>}
+

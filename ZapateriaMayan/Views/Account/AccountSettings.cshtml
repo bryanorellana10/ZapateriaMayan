@@ -1,0 +1,95 @@
+﻿@model ZapateriaMayan.ViewModels.UsersViewModel
+@{
+    string currentRole = "";
+}
+
+<br />
+<section class="content">
+    @Html.Partial("_Mensaje")
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+
+                <!-- Profile Image -->
+                <div class="card card-primary card-outline">
+                    <div class="card-body box-profile">
+                        <div class="text-center">
+                            <img class="profile-user-img img-fluid img-circle"
+                                 src="~/Images/userprofiledefault.png"
+                                 alt="User profile picture">
+                        </div>
+
+                        <h3 class="profile-username text-center">@Model.User.Name</h3>
+
+                        <p class="text-muted text-center">
+                            @foreach (var item in Model.UserRoles)
+                            {
+                                @item
+                                currentRole = item;
+                            }
+                        </p>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+
+            </div>
+            <!-- /.col -->
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header p-2">
+
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="active tab-pane" id="activity">
+
+                                @using (Html.BeginForm("ChangePassword", "Account"))
+                                {
+                                    <div class="post">
+                                        <div class="form-group">
+                                            <label>Nueva Contraseña</label>
+                                            <input type="password" class="form-control" name="newPassword" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Confirmar Contraseña</label>
+                                            <input type="password" class="form-control" name="confirmPassword" />
+                                        </div>
+                                        <button type="submit" class="btn btn-info" id="resetPassword">Actualizar contraseña</button>
+
+                                    </div>
+                                }
+
+                                <br />
+                                <hr />
+                                @using (Html.BeginForm("ChangeUserNameEmail", "Account"))
+                                {
+                                    <div class="post">
+                                        <div class="form-group">
+                                            <label>Correo</label>
+                                            <div class="text-info">@Model.User.UserName</div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Nuevo Correo </label>
+                                            <input type="email" class="form-control" name="newEmail" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Confirmar Correo</label>
+                                            <input type="email" class="form-control" name="confirmEmail" />
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-info">Actualizar correo.</button>
+
+                                }
+
+                                <!-- /.post -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>

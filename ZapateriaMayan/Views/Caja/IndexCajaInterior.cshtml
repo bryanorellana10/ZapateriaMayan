@@ -1,0 +1,256 @@
+﻿@model  ZapateriaMayan.ViewModels.CajaInteriorViewModel
+@{ ViewBag.Title = "Apertura de Caja - Interior";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+
+@Html.Partial("_Mensaje")
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+@using (Html.BeginForm())
+{
+<br />
+
+                <section class="content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-7" style="float:none;margin:auto;">
+                                <!-- general form elements -->
+                                @{ var Color = ""; }
+                                @if (ViewBag.EstadoCaja == true)
+                                {
+                                    Color = "card-primary";
+                                }
+                                else
+                                {
+                                    Color = "card-danger";
+                                }
+                                <div class="card @Color">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Apertura de caja - Interior</h3>
+                                    </div>
+
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label>Fecha Apertura</label>
+                                                    @if (ViewBag.EstadoCaja == true)
+                                                    {
+                                    @Html.TextBoxFor(m => m.CajaInterior.FechaApertura, new { @class = "form-control", @readonly = true }) }
+                                                    else
+                                                    {
+                                    <input value="@ViewBag.Caja.FechaApertura" class="form-control" disabled>}
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label>Monto Apertura</label>
+                                                    @if (ViewBag.EstadoCaja == true)
+                                                    {
+                                    @Html.TextBoxFor(m => m.CajaInterior.MontoApertura, new { @class = "form-control" }) }
+                                                    else
+                                                    {
+                                    <input value="@ViewBag.Caja.MontoApertura" class="form-control" disabled>}
+                                                </div>
+                                            </div>
+
+
+                                            @*<div class="col-12">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputPassword1">Número de Guía</label>
+                                                        @Html.TextBoxFor(m => m.DespachosInterior.NumeroGuia, new { @class = "form-control", @placeholder = "Número de Guía" })
+                                                    </div>
+                                                </div>*@
+                                        </div>
+
+                                    </div>
+
+                                    <div class="card-footer">
+                                        @if (ViewBag.EstadoCaja == true)
+                                        {
+                        <button type="submit" class="btn btn-primary">Abrir Caja</button> }
+                    else
+                    {
+    <button type="button" data-toggle="modal" data-target="#modalClose" class="btn btn-danger">Cerrar Caja</button>}
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </section>}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="card  bg-gradient-white">
+            <div class="card-body">
+                <div class="row">
+
+                </div>
+                <table id="CajaInterior" class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Fecha Apertura</th>
+                            <th>Monto Apertura</th>
+                            <th>Gastos</th>
+                            <th>Ingresos</th>
+                            <th>Total</th>
+                            <th>Responsable</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.CajaInteriorsList)
+                        {
+                            var bgColor = "";
+                            if (item.EstadoCaja) {
+                                bgColor = "bg-gradient-success";
+                            }
+
+            <tr class="@bgColor">
+                <td>@item.FechaApertura</td>
+                <td>@item.MontoApertura</td>
+                <td>
+                    @{ decimal SumatoriaEgreso = 0;
+                        foreach (var detalle in item.DetalleCajaInterior)
+                        {
+                            SumatoriaEgreso += detalle.Gasto;
+                        } }
+                    @SumatoriaEgreso
+
+                </td>
+
+                <td>
+                    @{ decimal SumatoriaIngreso = 0;
+                        foreach (var detalle in item.DetalleCajaInterior)
+                        {
+                            SumatoriaIngreso += detalle.Ingreso;
+                        } }
+                    @SumatoriaIngreso
+
+                </td>
+                <td>
+                    @{ var respuesta = SumatoriaIngreso - SumatoriaEgreso; }
+                    @respuesta
+                </td>
+                <td>@item.Responsable</td>
+                <td>
+                    <a href="@Url.Action("VerDetalleCajaInterior","Caja", new { id = item.Id })" class="btn btn-primary btn-sm">Ver Detalle</a>
+                </td>
+
+            </tr>
+}
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Fecha Apertura</th>
+                            <th>Monto Apertura</th>
+                            <th>Gastos</th>
+                            <th>Ingresos</th>
+                            <th>Total</th>
+                            <th>Responsable</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="modalClose" tabindex="-1" role="dialog" aria-labelledby="modalClose" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-gradient-danger">
+                <h5 class="modal-title" id="exampleModalLongTitle">Cierre de Caja</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+
+
+                    <div class="col-sm-12">
+                        <div class="form-group">                           
+                            <h5>¿Esta seguro de querer cerrar la caja?</h5>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="buttonCerrar" onclick="cerrarCaja()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts{
+
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Scripts/dataTables.responsive.min.js"></script>
+    <script src="~/Scripts/select2.full.min.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+
+    <script src="~/Scripts/daterangepicker.js"></script>
+    <script src="~/Scripts/tempusdominus-bootstrap-4.min.js"></script>
+
+    <script>
+        $("#CajaInterior").DataTable({
+            "responsive": true,
+            "autoWidth": false,
+            "order": [[0, "desc"]],
+            "language": {
+                url: "//cdn.datatables.net/plug-ins/1.10.21/i18n/Spanish.json"
+            }
+        });
+
+
+        function cerrarCaja() {
+            $("#buttonCerrar").prop('disabled', true)
+
+          
+            $.ajax({
+                type: "post",
+                url: '@Url.Action("CerrarCaja","Caja")',
+                data: '',
+                contenttype: 'application/json; charset=utf-8',
+                datatype: 'json',
+                error: function () {
+                    alert("No se ha podido cerrar la caja.");
+                    $('#modalClose').modal('hide');
+                    $("#buttonCerrar").prop('disabled', false)
+                },
+                success: function (result) {
+                    alert("Se ha cerrado la caja exitosamente.");
+                    $("#modalClose").prop('disabled', false)
+                    $('#exampleModalLong').modal('hide');
+                    location.reload();
+                }
+            });
+
+        }
+
+
+    </script>
+
+}
+@section select2{
+    <link rel="stylesheet" href="~/Content/select2.min.css">
+    <link rel="stylesheet" href="~/Content/daterangepicker.css">
+
+}

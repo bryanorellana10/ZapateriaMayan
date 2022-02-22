@@ -1,0 +1,53 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+
+
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/Content/adminlte.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="~/Scripts/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/Scripts/adminlte.js"></script>
+
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            bsCustomFileInput.init();
+        });</script>
+
+    <script type="text/javascript">
+        function GetFileSize() {
+            var fi = document.getElementById('file'); // GET THE FILE INPUT.
+
+            // VALIDATE OR CHECK IF ANY FILE IS SELECTED.
+            if (fi.files.length > 0) {
+                // RUN A LOOP TO CHECK EACH SELECTED FILE.
+                for (var i = 0; i <= fi.files.length - 1; i++) {
+
+                    var fsize = fi.files.item(i).size;      // THE SIZE OF THE FILE.
+                    document.getElementById('fp').innerHTML =
+                        document.getElementById('fp').innerHTML + '<br /> ' +
+                        '<b>' + Math.round((fsize / 1024)) + '</b> KB';
+                }
+            }
+        }</script>
+    @RenderSection("scripts", false)
+    <div>
+        @RenderBody()
+    </div>
+</body>
+</html>

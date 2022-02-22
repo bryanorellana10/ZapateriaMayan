@@ -1,0 +1,60 @@
+﻿@model ZapateriaMayan.ViewModels.UsersViewModel
+
+@{
+    string currentRole = "";
+}
+
+@using (Html.BeginForm("UpdateMaintenance", "Account"))
+{
+    <div class="card-body">
+        @Html.Partial("_Mensaje")
+        <br />
+        <section class="content">
+
+            <div class="container-fluid">
+
+                <br />
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="card card-navy">
+                            <div class="card-header">
+                                <h3 class="card-title">Información del usuario</h3>
+                            </div>
+
+
+                            <div class="card">
+
+
+                                <div class="card-body">
+                                    <h6>Usuario: <span class="text-info">@Model.User.Name</span></h6>
+
+                                    <hr />
+                                    @foreach (var item in Model.UserRoles)
+                                    {
+                                        <h6>Rol actual: <span class="text-info"> @item </span></h6>
+                                        currentRole = item;
+                                    }
+                                    <br />
+
+                                    @Html.DropDownList("NewRoleName", Model.Roles, new { @class = "form-control" })
+                                    @Html.Hidden("oldRoleName", currentRole)
+                                    @Html.Hidden("Id", Model.Id)
+                                    <br />
+                                    <button type="submit" class="btn btn-danger">Cambiar Rol</button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+    </div>
+}

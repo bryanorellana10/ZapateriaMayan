@@ -1,0 +1,168 @@
+﻿@model ZapateriaMayan.ViewModels.DespachosViewModel
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">General</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="inputStatus">Pedido :</label>
+                        <p>@Model.Pedido.Id</p>
+                        <div class="col-sm-6">
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <label>Nombre Cliente :</label>
+                                <p>@Model.Pedido.Cliente.NombreYApellidos</p>
+                            </div>
+                            <div class="col-sm-5">
+                                <label>Telefono 1:</label>
+                                <p>@Model.Pedido.Cliente.Telefono1</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <label>Whatssap: </label>
+                                <p>@Model.Pedido.Cliente.Whatsapp</p>
+                            </div>
+                            <div class="col-sm-5">
+                                <label>Instagram:</label>
+                                <p>@Model.Pedido.Cliente.Instagram</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputDescription">Dirección :</label>
+                        <p>@Model.Pedido.Cliente.Direccion</p>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <label>Fecha Entrega :</label>
+
+                                <p>@Model.Pedido.FechaEntrega</p>
+
+                            </div>
+                            <label>Nueva Fecha de Entrega (Opcional):</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="far fa-clock"></i></span>
+                                </div>
+                                <input type="text" class="form-control float-right fecha-entregacr" id="reservationtime5">
+                            </div>
+
+                        </div>
+
+                        <br />
+                        <a href="@Url.Action("NuevaFecha","Pedidos")" class="btn btn-primary">Actualizar Fecha </a>
+                        <br />
+                    </div>
+
+                    <br />
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <label>Referencia :</label>
+                                <p>@Model.Pedido.Region</p>
+                            </div>
+
+                            <div class="col-sm-5">
+                                <label>Ruta :</label>
+                                @Html.DropDownListFor(m => m.RutaDespacho.Id, Model.ListaRutas, "Seleccione...", new { @class = "form-control select2", @style = "width: 100%;", @id = "dropdown" })
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="card card-secondary">
+                <div class="card-header">
+                    <h3 class="card-title">Pedidos</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table id="example2" class="table table-bordered table-hover">
+                        <thead>
+
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Subtotal</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var productos in Model.Pedido.DetallePedidos)
+                            {
+
+                                <tr>
+                                    <td>@productos.DetalleTalla.Producto.NombreProducto</td>
+                                    <td>@productos.Cantidad</td>
+                                    <td>@productos.Precio</td>
+                                    <td>@productos.Subtotal </td>
+                                    <td>@productos.Total</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Subtotal</th>
+                                <th>Total</th>
+
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                </div>
+                <!-- /.card-body -->
+            </div>
+
+            <!-- /.card-body -->
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a href="@Url.Action("TodosCapital","Despachos")" class="btn btn-secondary">Cancelar</a>
+
+            </div>
+        </div>
+</section>
+
+
+
+

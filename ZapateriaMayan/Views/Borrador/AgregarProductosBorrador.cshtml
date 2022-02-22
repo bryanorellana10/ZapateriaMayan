@@ -1,0 +1,630 @@
+﻿@model ZapateriaMayan.ViewModels.PedidoViewModel
+
+<!-- Content Header (Page header) -->
+
+<div class="content-header">
+    <div class="container-fluid">
+        <h1 class="m-0 text-dark text-center text-red">Agregar productos al pedido # @Model.Pedido.Id</h1>
+
+        @*<div class="row mb-2">
+                <div class="col-12">
+                    <a href="@Url.Action("NuevoCliente","Clientes")" class="btn btn-primary">Guardar</a>
+                    <a href="@Url.Action("Contactos", "Clientes")" class="btn btn-outline-danger">Cancelar</a>
+                </div>
+            </div>*@
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="modal-xl">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <div class="card-body" style="overflow-x: auto">
+                @* <button class="btn btn-primary btn-xs float-right"> <i class="fas fa-undo-alt"></i> &nbsp; Actualizar</button>*@
+
+                <div class="form-group">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                        <label class="custom-control-label" for="customSwitch1">Mostrar precio por mayor</label>
+                    </div>
+                </div>
+
+                <table id="example1" class="table table-bordered table-striped">
+
+
+
+                    <thead>
+                        <tr>
+                            <th>Cod.</th>
+                            <th>Imagen</th>
+                            <th>Descripción</th>
+                            <th>Talla</th>
+                            <th>Observacion</th>
+                            <th>Cant.</th>
+                            <th>Precio</th>
+                            <th>Desc. %</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model.Productos)
+                        {
+            <tr>
+                <td>@item.Id</td>
+                <td>
+                    <img src="~/Images/@item.Imagen" height="100" />
+
+                </td>
+                <td>@item.NombreProducto</td>
+
+                <td>
+
+                    <select name="cars" id="cars" class="" style="width: 50px">
+                        <option value=""> ... </option>
+
+                        @foreach (var talla in item.DetalleTallas)
+                        {
+            <option value="@talla.Talla.Id"> @talla.Talla.NombreTalla </option>}
+                    </select>
+                    <span class="existencias-talla" style="color:red">X</span>
+
+
+                </td>
+                <td>
+                    <textarea placeholder="Observacion..." style="width: 250px"></textarea>
+                </td>
+                <td>
+                    <input type="number" value="0" style="width: 50px" />
+                </td>
+                <td>
+                    <span class="precio-normal">@item.Precio</span>
+                    <span class="precio-mayorista" style="display: none;">@item.PrecioOferta</span>
+                    @*<input type="number" value="@item.Precio"/>*@
+                </td>
+                <td>
+                    <input type="number" value="0" style="width: 50px" />
+
+                </td>
+                <td>
+                    <a href="#" class="btn btn-info btn-sm agregarDetallePedido">
+                        Agregar
+                    </a>
+                </td>
+            </tr>
+}
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Cod.</th>
+                            <th>Imagen</th>
+                            <th>Descripción</th>
+                            <th>Talla</th>
+                            <th>Observacion</th>
+                            <th>Cant.</th>
+                            <th>Precio</th>
+                            <th>Desc. %</th>
+                            <th>Acciones</th>
+
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+<div class="card-body">
+    <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+        @*<li class="nav-item">
+                <a class="nav-link active" id="custom-content-below-home-tab" data-toggle="pill" href="#custom-content-below-home" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Pedidos</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Solicitudes</a>
+            </li>*@
+
+    </ul>
+    <div class="tab-content" id="custom-content-below-tabContent">
+        <div class="tab-pane fade show active" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+            <br />
+            <section class="content">
+
+                <div class="container-fluid">
+                    <div>
+                        <button class="btn btn-warning btn-md" id="guardar-borrador"> <i class="fas fa-save"></i>  Guardar datos </button>
+
+                    </div>
+
+                    <br />
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="card card-navy">
+                                <div class="card-header">
+                                    <h3 class="card-title">Datos producto</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <!-- form start -->
+
+
+                                <div class="card">
+
+                                    <div class="card-header">
+                                        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal-xl">
+                                            <i class="fas fa-plus-square"></i> &nbsp; Agregar producto
+                                        </button>
+
+
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <div class="card-body p-0" style="overflow-x: auto">
+                                        <table class="table table-sm" id="mytablec">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width:1px">Cod.</th>
+                                                    <th>Descripción</th>
+                                                    <th style="width:115px;">Talla</th>
+                                                    <th style="width:1px; display:none">Val</th>
+                                                    <th style="width: 115px;">Cant.</th>
+                                                    <th style="width:115px;">Precio</th>
+                                                    <th style="width:115px;">Subtotal
+                                                    <th style="width:115px;">Desc.</th>
+                                                    <th style="width:115px;">Total</th>
+                                                    <th style="width:60px;">Acción</th>
+                                                    <th style="width:115px; color: red;">A fabricar</th>
+                                                    <th>P. Reserva</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="detallepedido"></tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+
+
+                                <div class="text-right" style="margin-right:1.5em">
+                                    <h5>Subtotal: Q <span id="subtotal-value">0.00</span></h5>
+                                    <h5>Descuento: Q <span id="descuento-value">0.00</span></h5>
+                                    <h5>Total: Q <span id="total-value">0.00</span></h5>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+
+            <div class="row">
+                <div class="col-md-10 pt-5" style="float:none;margin:auto;">
+                    <div class="card card-navy">
+                        <div class="card-header">
+                            <h3 class="card-title">Datos de solicitud a producción</h3>
+                        </div>
+
+
+                        <div class="card">
+
+                            @*<div class="card-header">
+                                    <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal-xl">
+                                        <i class="fas fa-plus-square"></i> &nbsp; Agregar producto
+                                    </button>
+
+
+                                </div>*@
+                            <!-- /.card-header -->
+                            <div class="card-body p-0">
+                                <table class="table table-sm" id="mytablesolis">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:1px">Cod.</th>
+                                            <th>Descripcion</th>
+                                            <th style="width:115px;">Talla</th>
+                                            <th style="width:1px; display:none">Val</th>
+                                            <th style="width: 115px;">Color</th>
+                                            <th style="width:60px;">Acción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="detallesolicitud"></tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+</div>
+
+
+
+@section scripts{
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Scripts/dataTables.responsive.min.js"></script>
+    <script src="~/Scripts/select2.full.min.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+
+    <script src="~/Scripts/daterangepicker.js"></script>
+    <script src="~/Scripts/tempusdominus-bootstrap-4.min.js"></script>
+
+
+
+
+    <script>
+        // setear los precios a mayoristas.
+        var checkbox = document.getElementById('customSwitch1')
+
+        checkbox.addEventListener('change', (event) => {
+            if (event.target.checked) {
+                $(".precio-mayorista").css("display", "block");
+                $(".precio-normal").css("display", "none");
+            } else {
+                $(".precio-mayorista").css("display", "none");
+                $(".precio-normal").css("display", "block");
+            }
+        })
+
+    </script>
+
+
+    <script>
+
+        $(".agregarDetallePedido").click(function (e) {
+            e.preventDefault();
+
+
+            var parent = $(this).parent().parent()
+            var child = parent.children('td');
+            var i = 0;
+
+            var data = new Array();
+
+            child.each(function () {
+
+                switch (i) {
+                    case 0:
+                        data[0] = $(this).text();
+                        break;
+                    case 2: parent
+                        data[2] = $(this).text();
+
+                        break;
+
+                    case 3:
+                        var selecteds = $(this).children('select#cars').children("option").filter(":selected");
+                        data[3] = selecteds;
+
+                        break;
+
+                    case 4:
+                        data[4] = $(this).children('textarea').val();
+                        break;
+
+                    case 5:
+                        data[5] = $(this).children('input').val();
+                        break;
+
+
+                    case 6:
+                        data[6] = $(this).find("span:visible").text();
+                        break;
+
+                    case 7:
+                        data[7] = $(this).children('input').val();
+                        break;
+                }
+
+                i++;
+
+            });
+
+            var capvalor = parseFloat(parseFloat(data[6]).toFixed(2) * Math.floor(data[5])).toFixed(2);
+            var disc = parseFloat(data[7] / 100).toFixed(2);
+
+            var descresta = parseFloat(capvalor * disc).toFixed(2)
+            var totadesc = parseFloat(capvalor - descresta).toFixed(2);
+
+            // Asegurarnos que no hayan campos vacios. Evitamos errores y codigo largo :)
+            if (data[3].val() === "" || data[5] === "") {
+                alert("Hay campos vacíos");
+                return;
+            }
+
+            var reserva = 0;
+
+            // Revisar si la talla tiene existencia en el inventario.
+
+            var datos = JSON.stringify({
+                cantidad: parseInt(data[5])
+            });
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                data: datos,
+                url: "/Inventario/VerificarExistencias/" + data[3].val(),
+                success: function (result, state) {
+
+                    if (result !== 0) {
+                        var r = confirm("No hay existencias, Faltan: " + result);
+                        reserva = result;
+
+                        if (r == true) {
+                            for (var i = 0; i < result; i++) {
+                                $('#detallesolicitud').append("<tr>"
+                                    + "<td>" + data[0] + "</td>"
+                                    + "<td>" + data[2] + "</td>"
+                                    + "<td>" + data[3].text() + "</td>"
+                                    + "<td style='display: none;'>" + data[3].val() + "</td>"
+                                    + "<td>" + data[6] + "</td>"
+                                    + "<td>" + '<a onclick="deleteRow(this)" class="btn btn-danger btn-sm text-white"><i class="fas fa-trash-alt"></i></a>' + "</td>"
+                                    + "<td style='display:none'>" + data[4] + "</td></tr > ");
+                            }
+                        } else {
+
+                            return; // no hace nada
+                        }
+
+                    }
+                    //var index = $.inArray(data[0], productosagregados);
+
+                    $('#detallepedido').append("<tr>"
+                        + "<td>" + data[0] + "</td>"
+                        + "<td>" + data[2] + "</td>"
+                        + "<td>" + data[3].text() + "</td>"
+                        + "<td style='display: none;'>" + data[3].val() + "</td>"
+                        + "<td>" + Math.abs(Math.floor(data[5])) + "</td>"
+                        + "<td>" + parseFloat(Math.abs(parseFloat(data[6]))).toFixed(2) + "</td>"
+                        + "<td class='subtotal-fila'>" + capvalor + "</td>"
+                        + "<td class='desc-fila'>" + descresta + "</td>"
+                        + "<td class='tota-sub-fila'>  " + totadesc + "</td>"
+                        + "<td>" + '<a onclick="deleteRow(this)" class="btn btn-danger btn-sm text-white"><i class="fas fa-trash-alt"></i></a>' + "</td>"
+                        + "<td style='color: red' class='reserva-value'>" + reserva + "</td>"
+                        + "<td>" + (data[5] - reserva) + "</td>"
+                        + "<td style='display:none'>" + data[4] + "</td></tr > ");
+
+                    //productosagregados.push(data[0]);
+                    getTotal();
+
+
+
+                },
+                error: function () {
+                    alert("Un error interno ha ocurrido.")
+                }
+
+            });
+
+            function getTotal() {
+                var total = 0;
+                var desc = 0;
+                var subtotal = 0
+                $('.tota-sub-fila').each(function () {
+                    total += parseFloat(this.innerHTML)
+                });
+
+                $('.desc-fila').each(function () {
+                    desc += parseFloat(this.innerHTML)
+                });
+
+                $('.subtotal-fila').each(function () {
+                    subtotal += parseFloat(this.innerHTML)
+                });
+
+                $('#total-value').text(parseFloat(total).toFixed(2));
+                $('#descuento-value').text(parseFloat(desc).toFixed(2));
+                $('#subtotal-value').text(parseFloat(subtotal).toFixed(2));
+
+
+
+            }
+            //getTotal();
+        });
+
+
+        // borrar fila de tabla
+        function deleteRow(r) {
+            var i = r.parentNode.parentNode.rowIndex;
+            document.getElementById("mytablec").deleteRow(i);
+            getTotal();
+
+            //var child = r.parentNode.parentNode.children;
+            //console.log(child)
+
+
+            //alert(child[3].innerHTML);
+
+        }
+
+
+
+        function getTotal() {
+            var total = 0;
+            var desc = 0;
+            var subtotal = 0
+            $('.tota-sub-fila').each(function () {
+                total += parseFloat(this.innerHTML)
+            });
+
+            $('.desc-fila').each(function () {
+                desc += parseFloat(this.innerHTML)
+            });
+
+            $('.subtotal-fila').each(function () {
+                subtotal += parseFloat(this.innerHTML)
+            });
+
+            $('#total-value').text(parseFloat(total).toFixed(2));
+            $('#descuento-value').text(parseFloat(desc).toFixed(2));
+            $('#subtotal-value').text(parseFloat(subtotal).toFixed(2));
+        }
+
+    </script>
+
+
+
+    <script>
+        $('select#cars').change(function (e) {
+            e.preventDefault();
+
+            var tallavalue = $(this).children("option").filter(":selected");
+
+            $select = $(this),
+                $span = $select.parent().find('.existencias-talla')
+
+
+
+            var datos = JSON.stringify({
+                valuee: tallavalue.val()
+            });
+
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: "/Inventario/RetornarExistencia/",
+                data: datos,
+                success: function (result) {
+
+                    //$(".existencias-talla").html(result);
+                    $span.html(result);
+
+                },
+                error: function () {
+                    alert("SE HA PRODUCIDO UN ERROR, REVISE SI LA INFORMACIÓN ESTA COMPLETA Y CORRECTA");
+                }
+            });
+
+        });
+    </script>
+
+
+
+    @*guardar a borrador*@
+
+<script>
+        $("#guardar-borrador").click(function (e) {
+            e.preventDefault();
+
+            var table = document.getElementById("mytablec");
+
+
+            if (table.rows.length <= 1) {
+                alert("Debe haber por lo menos un producto.");
+                return;
+            }
+
+                var Observaciones = [];
+
+                var detallereservas = [];
+                detallereservas.length = 0;
+
+
+                var detallesolicitud = [];
+                detallesolicitud.length = 0;
+
+
+            $.each($("#mytablec tbody tr"), function () {
+                    Observaciones.push($(this).find('td:eq(12)').html())
+
+                    detallereservas.push({
+                        DetalleTallaId: $(this).find('td:eq(3)').html(),
+                        CantidadSolicitada: $(this).find('td:eq(4)').html(),
+                        Precio: $(this).find('td:eq(5)').html(),
+                        SubTotal: $(this).find('td:eq(6)').html(),
+                        Descuento: $(this).find('td:eq(7)').html(),
+                        Total: $(this).find('td:eq(8)').html(),
+                        Cantidad: $(this).find('td:eq(11)').html(),
+                        CantidadReserva: $(this).find('td:eq(10)').html(),
+
+                    });
+                });
+
+
+                $.each($("#mytablesolis tbody tr"), function () {
+                    detallesolicitud.push({
+                        Descripcion: $(this).find('td:eq(1)').html(),
+                        Talla: $(this).find('td:eq(2)').html(),
+                        DetalleTallaId: $(this).find('td:eq(3)').html(),
+
+                    });
+                });
+
+
+
+            var data = JSON.stringify({
+                observaciones: Observaciones,
+                    // datos de detalle
+                    reservas: detallereservas,
+                    solicitudes: detallesolicitud,
+                    PedidoId : @Model.Pedido.Id,
+
+                });
+
+            $.when(b_enviar_cr(data)).then(function (response) {                 
+                    location.href = '@Url.Action("EditarBorrador", "Borrador", new { id = Model.Pedido.Id })';
+                }).fail(function (err) {
+                    console.log(err);
+                });
+
+
+        });
+
+        function b_enviar_cr(data) {
+            console.log(data);
+            return $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: "/Borrador/GuardarABorrador_modificar",
+                data: data,
+                success: function (result) {
+                    alert(result);
+                    location.reload();
+                },
+                error: function () {
+                    alert("SE HA PRODUCIDO UN ERROR, REVISE SI LA INFORMACIÓN ESTA COMPLETA Y CORRECTA");
+                }
+            });
+        }
+
+
+</script>
+
+    <script>
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "ordering": false,
+                "paging": true,
+                "language": {
+                    url: "//cdn.datatables.net/plug-ins/1.10.21/i18n/Spanish.json"
+                }
+            });
+          
+        });</script>
+
+}

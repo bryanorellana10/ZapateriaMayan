@@ -1,0 +1,104 @@
+﻿@model ZapateriaMayan.ViewModels.ReportesVentasViewModel
+
+@{ ViewBag.Title = "Reportes de Ventas";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+@Html.Partial("_Mensaje")
+@using (Html.BeginForm())
+{
+<br />
+                <br />
+                                <section class="content">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-6" style="float:none;margin:auto;">
+                                                <!-- general form elements -->
+                                                <div class="card card-primary">
+                                                    <div class="card-header">
+                                                        <h3 class="card-title">Generar Reportes de ventas de Pedidos de la Capital</h3>
+                                                    </div>
+
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <label>Seleccione el rango para generar el reporte.</label>
+
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text"><i class="far fa-clock"></i></span>
+                                                                        </div>
+                                                                        <input name="date" type="text" class="form-control float-right fecha-entregacr" id="reservationtime9">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--<div class="col-12">
+                                                                <div class="form-group">
+                                                                    <div class="icheck-primary d-inline">-->
+                                                                        @*<input type="checkbox" id="" class="Capital" name="checkCapital">*@
+                                                                        <!--@Html.CheckBox("CheckBoxCapital", new { @class = "falta-Textil" })
+                                                                        <label>Capital</label>
+                                                                    </div>
+                                                                    <br />
+                                                                    <div class="icheck-primary d-inline">-->
+                                                                        @*<input type="checkbox" id="" class="Interior" name="checkInterior">*@
+                                                                        <!--@Html.CheckBox("CheckBoxInterior", new { @class = "falta-Textil" })
+                                                                        <label>Interior</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>-->
+
+                                                        </div>
+                                                       
+                                                        
+                                                    </div>
+
+                                                    <div class="card-footer">
+                                                        <button type="submit" class="btn btn-primary">Generar</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </section>}
+
+
+@section scripts{
+
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Scripts/dataTables.responsive.min.js"></script>
+    <script src="~/Scripts/select2.full.min.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+
+    <script src="~/Scripts/daterangepicker.js"></script>
+    <script src="~/Scripts/tempusdominus-bootstrap-4.min.js"></script>
+
+    <script>
+        $(function () {
+            $('.select2').select2()
+
+        });
+
+
+        $('#reservationtime9').daterangepicker({
+            timePicker: true,
+            timePickerIncrement: 30,
+            locale: {
+                format: 'MM/DD/YYYY hh:mm A'
+            }
+        });
+
+
+    </script>
+
+}
+@section select2{
+    <link rel="stylesheet" href="~/Content/select2.min.css">
+    <link rel="stylesheet" href="~/Content/daterangepicker.css">
+
+}

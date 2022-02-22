@@ -1,0 +1,79 @@
+﻿@model ZapateriaMayan.ViewModels.TallaViewModel
+
+@{
+    ViewBag.Title = "EliminarTalla";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    @Html.HiddenFor(model => model.Producto.Id)
+
+
+} 
+
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Eliminar Talla</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Talla</a></li>
+                    <li class="breadcrumb-item active">Eliminar</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+        @*<div class="row mb-2">
+                <div class="col-12">
+                    <a href="@Url.Action("NuevoCliente","Clientes")" class="btn btn-primary">Guardar</a>
+                    <a href="@Url.Action("Contactos", "Clientes")" class="btn btn-outline-danger">Cancelar</a>
+                </div>
+            </div>*@
+    </div>
+</div>
+
+
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card bg-red container">
+        <div class="card-header">
+            <h3 class="card-title">¿ Está seguro que desea eliminar la Talla ? &nbsp; <i class="fas fa-exclamation-triangle"></i></h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div>
+                <h6 class="text-black-50">Numero de Talla:</h6>
+                <p>@Model.Talla.NombreTalla</p>
+            </div>
+            @*<button type="submit" class="btn btn-warning"> Aceptar </button>*@
+            <a href="@Url.Action("EliminarT", "Inventario", new { id = Model.Talla.Id })" class="btn btn-warning">
+                Aceptar
+            </a>
+            <a href="@Url.Action("Productos", "Inventario")" class="btn btn-outline-warning">
+                Cancelar
+            </a>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+
+
+
+
+
+

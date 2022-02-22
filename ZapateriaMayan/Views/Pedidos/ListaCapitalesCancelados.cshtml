@@ -1,0 +1,141 @@
+﻿@model IEnumerable<CapaBaseDeDatos.Models.Pedido>
+@{ ViewBag.Title = "Contactos";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+@Html.Partial("_Mensaje")
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Pedidos Cancelados Capital</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Pedidos</a></li>
+                    <li class="breadcrumb-item active">Capital</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+        <div class="row mb-2">
+            <div class="col-12">
+                <a href="@Url.Action("NuevoPedido","Pedidos")" class="btn btn-primary">Crear</a>
+                <a href="#" class="btn btn-success"> <i class="fas fa-file-excel"></i> &nbsp; Importar desde Excel</a>
+            </div>
+        </div>
+
+
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Lista de pedidos cancelados Capital</h3>
+                <div>
+                    <a href="" class="btn btn-outline-primary btn-xs float-right" style="margin:0.2em">
+                        <i class="fas fa-th-large"></i>
+                    </a>
+                    <a href="" class="btn btn-primary btn-xs float-right" style="margin: 0.2em">
+                        <i class="fas fa-list "></i>
+                    </a>
+                </div>
+
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>F. Ingreso</th>
+                            <th>Cliente</th>
+                            <th>Región</th>
+                            <th>Contacto</th>
+                            <th>Teléfono </th>
+                            <th>Subtotal</th>
+                            <th>Total</th>
+                            <th>Entrega</th>
+                            <th>Dirección</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var pedido in Model)
+                        {
+
+                           <tr onclick="location.href = '@Url.Action("DetallePedido", "Pedidos", new {id = pedido.Id })'" >
+                                    <td>@pedido.FechaPedido</td>
+                                    <td>
+                                        @pedido.Cliente.Nombres
+                                    </td>
+                                    <td>@pedido.Region</td>
+                                    <td>@pedido.ContactoPrincipal</td>
+                                    <td>@pedido.Telefonoc</td>
+                                    <td>@pedido.SubTotal</td>
+                                    <td>@pedido.Total</td>
+                                    <td>@pedido.FechaEntrega</td>
+                                    <td>@pedido.Direccion</td>
+
+                                </tr>
+                           
+
+
+                        }
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Cliente</th>
+                            <th>Región</th>
+                            <th>Contacto</th>
+                            <th>Teléfono </th>
+                            <th>Subtotal</th>
+                            <th>Total</th>
+                            <th>Entrega</th>
+                            <th>Dirección</th>
+                            
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+@section scripts{
+
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Scripts/dataTables.responsive.min.js"></script>
+
+
+    <script>$(function () {
+            $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "ordering": false,
+                "paging": true,
+            });
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });</script>
+}

@@ -1,0 +1,169 @@
+﻿@model IEnumerable<CapaBaseDeDatos.Models.Solicitudes>
+
+@{ ViewBag.Title = "Solicitudes";
+Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+@Html.Partial("_Mensaje")
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Solicitudes</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Producción</a></li>
+                    <li class="breadcrumb-item active">solicitudes</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+        <div class="row mb-2">
+            <div class="col-12">
+                <a href="@Url.Action("NuevaSolicitud","Produccion")" class="btn btn-primary">Generar Solicitud</a>
+            </div>
+        </div>
+
+
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Lista de solicitudes</h3>
+                <div>
+                    <a href="" class="btn btn-outline-primary btn-xs float-right" style="margin:0.2em">
+                        <i class="fas fa-th-large"></i>
+                    </a>
+                    <a href="" class="btn btn-primary btn-xs float-right" style="margin: 0.2em">
+                        <i class="fas fa-list "></i>
+                    </a>
+                </div>
+
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-red"># Solicitud</th>
+                            <th>F. Ingreso</th>
+                            <th class="text-red">Ref. Pedido</th>
+                            <th>Estado</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var solicitud in Model)
+                        {
+            <tr onclick="location.href = '@Url.Action("DetalleSolicitud", "Produccion", new { id = solicitud.Id})'">
+                <td class="text-red">@solicitud.Id </td>
+                <td>
+                    @solicitud.FechaSolicitud
+                </td>
+                <td class="text-red">@solicitud.PedidoId</td>
+                
+                        @if(solicitud.EstadosProducto.Estado == "En espera")
+                        {
+                        <td><span class="badge badge-warning">@solicitud.EstadosProducto.Estado</span></td>
+
+                        }
+                        else if(solicitud.EstadosProducto.Estado == "En Produccion")
+                        {
+                        <td><span class="badge badge-danger">@solicitud.EstadosProducto.Estado</span></td>
+
+                        }
+                        else if(solicitud.EstadosProducto.Estado == "Confirmado")
+                        {
+                        <td><span class="badge badge-success">@solicitud.EstadosProducto.Estado</span></td>
+
+                        }
+
+                        else if(solicitud.EstadosProducto.Estado == "Con problema")
+                        {
+                        <td><span class="badge badge-secondary">@solicitud.EstadosProducto.Estado</span></td>
+
+                        }
+
+                        else if(solicitud.EstadosProducto.Estado == "Demorado")
+                        {
+                        <td><span class="badge badge-info">@solicitud.EstadosProducto.Estado</span></td>
+
+                        }
+
+                        else if(solicitud.EstadosProducto.Estado == "Finalizado")
+                        {
+                        <td><span class="badge badge-light">@solicitud.EstadosProducto.Estado</span></td>
+
+                        }
+
+                        
+
+
+            <td class="text-center">
+
+                @*<a class="btn btn-primary btn-xs" href="@Url.Action("ModificarContacto", "Clientes", new { id = cliente.Id})"><i class="fas fa-edit"></i></a>*@
+                <a class="btn btn-danger btn-xs" href="@Url.Action("","", new { })"><i class="fas fa-trash-alt"></i></a>
+
+
+
+               
+            </td>
+            @*<td class="text-center">
+                <a class="btn btn-success btn-sm" href="@Url.Action("","", new { })"> <i class="fas fa-check"></i></a>
+
+            </td>*@
+            </tr>}
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th class="text-red"># Solicitud</th>
+                            <th>F. Ingreso</th>
+                            <th class="text-red">Ref. Pedido</th>
+                            <th>Estado</th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+@section scripts{
+
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Scripts/dataTables.responsive.min.js"></script>
+
+
+    <script>$(function () {
+            $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "ordering" : false
+            });
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });</script>
+}

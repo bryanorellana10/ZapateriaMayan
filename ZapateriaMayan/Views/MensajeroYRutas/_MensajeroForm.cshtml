@@ -1,0 +1,40 @@
+﻿@model ZapateriaMayan.ViewModels.MensajeroYRutasMensajeroViewModel
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-teal">
+                    <div class="card-header">
+                        <h3 class="card-title">Nuevo Mensajero</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form role="form">
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Nombres</label>
+                                        @Html.TextBoxFor(m => m.Despachador.Nombres, new { @class = "form-control", @placeholder = "Nombres" })
+                                        @Html.ValidationMessageFor(m => m.Despachador.Nombres, "", new { @class = "text-danger" })
+                                        @*<input class="form-control" placeholder="Nombres">*@
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <a href="@Url.Action("TodosLosMensajeros", "MensajeroYRutas")" class="btn btn-outline-danger">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

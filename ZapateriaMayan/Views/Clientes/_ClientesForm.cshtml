@@ -1,0 +1,111 @@
+﻿@model ZapateriaMayan.ViewModels.ClienteViewModel
+
+@Html.HiddenFor(m => m.Cliente.FechaCreacion)
+@Html.HiddenFor(m => m.Cliente.Estado)
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-teal">
+                    <div class="card-header">
+                        <h3 class="card-title">Nuevo Cliente</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form role="form">
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Nombres</label>
+                                        @Html.TextBoxFor(m => m.Cliente.Nombres, new { @class = "form-control", @placeholder = "Nombres" })
+                                        @Html.ValidationMessageFor(m => m.Cliente.Nombres, "", new { @class = "text-danger" })
+                                        @*<input class="form-control" placeholder="Nombres">*@
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @*@Html.RadioButtonFor(m => m.Cliente.ContactoPrincipal , "Facebook", new { @class = "", @id = "customRadio3", @checked = true })*@
+
+                                        <label><i class="fab fa-facebook-f"></i> &nbsp; Facebook</label>
+                                        @Html.TextBoxFor(m => m.Cliente.Facebook, new { @class = "form-control", @placeholder = "Facebook" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Teléfono 1</label>
+                                        @Html.TextBoxFor(m => m.Cliente.Telefono1, new { @class = "form-control", @placeholder = "Teléfono 1" })
+                                        @Html.ValidationMessageFor(m => m.Cliente.Telefono1, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label>Teléfono 2</label>
+                                        @Html.TextBoxFor(m => m.Cliente.Telefono2, new { @class = "form-control", @placeholder = "Teléfono 2" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        @*@Html.RadioButtonFor(m => m.Cliente.ContactoPrincipal, "Whatsapp", new { @class = "", @id = "customRadio3" })*@
+
+                                        <label><i class="fab fa-whatsapp"></i> &nbsp; Whatsapp</label>
+                                        @Html.TextBoxFor(m => m.Cliente.Whatsapp, new { @class = "form-control", @placeholder = "Whatsapp" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        @*@Html.RadioButtonFor(m => m.Cliente.ContactoPrincipal, "Instagram", new { @class = "", @id = "customRadio3" })*@
+
+                                        <label><i class="fab fa-instagram"></i> &nbsp; Instagram</label>
+                                        @Html.TextBoxFor(m => m.Cliente.Instagram, new { @class = "form-control", @placeholder = "Instagram" })
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>Dirección</label>
+                                        @Html.TextAreaFor(m => m.Cliente.Direccion, new { @class = "form-control", @placeholder = "Dirección", @rows = 10 })
+                                        @Html.ValidationMessageFor(m => m.Cliente.Direccion, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label>Región</label>
+                                <div class="custom-control custom-radio">
+                                    @Html.RadioButtonFor(m => m.Cliente.Region, "Capital", new { @class = "custom-control-input", @id = "customRadio1", @checked = true })
+                                    @*<input class="custom-control-input" type="radio" id="customRadio1" name="customRadio">*@
+                                    <label for="customRadio1" class="custom-control-label">Capital</label>
+                                </div>
+                                <div class="custom-control custom-radio">
+                                    @Html.RadioButtonFor(m => m.Cliente.Region, "Interior", new { @class = "custom-control-input", @id = "customRadio2" })
+                                    @*<input class="custom-control-input" type="radio" id="customRadio2" name="customRadio" checked>*@
+                                    <label for="customRadio2" class="custom-control-label">Interior</label>
+                                </div>
+                                @Html.ValidationMessageFor(m => m.Cliente.Region, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <a href="@Url.Action("Contactos", "Clientes")" class="btn btn-outline-danger">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

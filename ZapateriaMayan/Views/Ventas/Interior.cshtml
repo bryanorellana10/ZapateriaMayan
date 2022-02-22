@@ -1,0 +1,125 @@
+﻿@model IEnumerable<CapaBaseDeDatos.Models.VentasInterior>
+
+@{ 
+    ViewBag.Title = "Ventas Interior";
+                Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+@Html.Partial("_Mensaje")
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Ventas de pedidos de Interior</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Ventas</a></li>
+                    <li class="breadcrumb-item active">Interior</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Lista de ventas Interior</h3>
+                <div>
+                    <a href="" class="btn btn-outline-primary btn-xs float-right" style="margin:0.2em">
+                        <i class="fas fa-th-large"></i>
+                    </a>
+                    <a href="" class="btn btn-primary btn-xs float-right" style="margin: 0.2em">
+                        <i class="fas fa-list "></i>
+                    </a>
+                </div>
+
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th># Venta</th>
+                            <th>Fecha Venta</th>
+                            <th class="text-red"># de Pedido</th>
+                            <th># de Guía</th>
+                            <th>Vendedor</th>
+                            <th>Pedido #</th>
+                            <th>Subtotal</th>
+                            <th>Descuento</th>
+                            <th>Total</th>
+                            @*<th class="text-center">Acciones</th>*@
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var ventas in Model)
+                        {
+                        <tr onclick="location.href = '@Url.Action("DetallePedido", "Pedidos", new { id = ventas.DespachosInterior.PedidoId})'">
+                        <td>@ventas.Id</td>    
+                        <td>@ventas.FechaVenta</td>
+                        <td class="text-red">@ventas.DespachosInterior.Pedido.Id</td>
+                        <td>@ventas.DespachosInterior.NumeroGuia</td>    
+                        <td>(pendiente)</td>
+                            <td>@ventas.DespachosInterior.PedidoId</td>
+                            <td>@ventas.SubTotal</td>
+                            <td>@ventas.Descuento</td>
+                            <td>@ventas.Total</td>
+
+                            @*<td class="text-center">
+
+                                <a class="btn btn-danger btn-xs" href="@Url.Action("EliminarContacto","Clientes", new { })"><i class="fas fa-trash-alt"></i></a>
+
+                            </td>*@
+                        </tr>}
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th># Venta</th>
+                            <th>Fecha Venta</th>
+                            <th class="text-red"># de Pedido</th>
+                            <th># de Guía</th>
+                            <th>Vendedor</th>
+                            <th>Pedido #</th>
+                            <th>Subtotal</th>
+                            <th>Descuento</th>
+                            <th>Total</th>
+                            @*<th class="text-center">Acciones</th>*@
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+@section scripts{
+
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Scripts/dataTables.responsive.min.js"></script>
+
+
+    <script>$(function () {
+            $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "ordering": false,
+
+            });
+          
+        });</script>
+}

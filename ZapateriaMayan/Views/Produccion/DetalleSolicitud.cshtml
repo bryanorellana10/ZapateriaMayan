@@ -1,0 +1,389 @@
+﻿@model ZapateriaMayan.ViewModels.SolicitudesViewModel
+
+
+
+@{ ViewBag.Title = "DetallesProducto";
+                Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+
+
+<!-- Content Wrapper. Contains page content -->
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Detalle Solicitud</h1>
+                <br />
+
+                @*<a href="@Url.Action("ConfirmarSolicitud","Produccion", new { id = Model.Solicitudes.Id })" class="btn btn-success btn-sm">
+                    <i class="fas fa-check"></i> &nbsp; Confirmar
+                </a>
+
+
+                <a href="@Url.Action("EnProduccio","Produccion", new { id =Model.Solicitudes.Id})" class="btn btn-danger btn-sm">
+                    <i class="fas fa-hammer"></i> &nbsp; En producción
+                </a>
+
+
+                <a href="@Url.Action("ConProblema","Produccion", new { id = Model.Solicitudes.Id})" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-exclamation-triangle"></i> &nbsp; Con problema
+                </a>
+
+                <a href="@Url.Action("Demorado","Produccion", new { id = Model.Solicitudes.Id })" class="btn btn-info btn-sm">
+                    <i class="fas fa-history"></i> &nbsp; Demorado
+                </a>
+
+                <a href="@Url.Action("Finalizado","Produccion", new { id = Model.Solicitudes.Id })" class="btn btn-outline-success btn-sm">
+                    <i class="fas fa-clipboard-check"></i> &nbsp; Finalizado
+                </a>*@
+
+
+
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Producción</a></li>
+                    <li class="breadcrumb-item active">Detalle Solicitud</li>
+                    <li class="breadcrumb-item active">@Model.Solicitudes.Id</li>
+
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+
+
+                <!-- Main content -->
+                <div class="invoice p-3 mb-3">
+                    <!-- title row -->
+                    <div class="row">
+                        <div class="col-12">
+                            <h4>
+                                Solicitud # @Model.Solicitudes.Id
+                                <small class="float-right"> <b>F. Ingreso: </b>@Model.Solicitudes.FechaSolicitud</small>
+<br />
+@*<small class="float-right">
+                        @if(Model.Solicitudes.EstadosProducto.Estado == "En espera")
+                        {
+                        <span class="badge badge-warning">@Model.Solicitudes.EstadosProducto.Estado</span>
+
+                        }
+                        else if(Model.Solicitudes.EstadosProducto.Estado == "En Produccion")
+                        {
+                        <span class="badge badge-danger">@Model.Solicitudes.EstadosProducto.Estado</span>
+
+                        }
+                        else if(Model.Solicitudes.EstadosProducto.Estado == "Confirmado")
+                        {
+                       <span class="badge badge-success">@Model.Solicitudes.EstadosProducto.Estado</span>
+
+                        }
+
+                        else if(Model.Solicitudes.EstadosProducto.Estado == "Con problema")
+                        {
+                        <span class="badge badge-secondary">@Model.Solicitudes.EstadosProducto.Estado</span>
+
+                        }
+
+                        else if(Model.Solicitudes.EstadosProducto.Estado == "Demorado")
+                        {
+                        <span class="badge badge-info">@Model.Solicitudes.EstadosProducto.Estado</span>
+
+                        }
+
+                        else if(Model.Solicitudes.EstadosProducto.Estado == "Finalizado")
+                        {
+                        <span class="badge badge-light">@Model.Solicitudes.EstadosProducto.Estado</span>
+
+                        }
+
+    </small>*@
+
+
+                            </h4>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- info row -->
+                    <div class="row invoice-info">
+                        <div class="col-sm-3 invoice-col">
+                            <br />
+                            <address>
+                                <strong>Ref. Pedido: &nbsp;</strong><br />
+                                <span class="text-gray"> @Model.Solicitudes.PedidoId</span><br />
+
+                                @*<strong>Modelo: &nbsp;</strong><br />
+                                <span class="text-gray"> @Model.Modelo </span><br />*@
+                            </address>
+                        </div>
+                        <!-- /.col -->
+                        @*<div class="col-sm-3 invoice-col">
+                            <br />
+                            <address>
+                                <strong>Categoria: </strong><br>
+                                <span class="text-gray"> @Model.Categoria.NombreC </span><br />
+
+                                <strong>Sub Categoria: </strong><br>
+                                <span class="text-gray"> @Model.Categoria1 </span><br />
+
+                                <strong>Específico </strong><br>
+                                <span class="text-gray"> @Model.Categoria2 </span><br />
+                            </address>
+                        </div>*@
+                        <!-- /.col -->
+                        <div class="col-sm-3 invoice-col">
+                            <br />
+                            @*<address>
+                                <strong>Precio: </strong><br>
+                                <span class="text-gray"> @Model.Precio </span><br />
+
+                                <strong>Precio Oferta: </strong><br>
+                                <span class="text-gray"> @Model.PrecioOferta </span><br />
+
+                            </address>*@
+                        </div>
+
+                        @*<div class="col-sm-3 invoice-col">
+                            <br />
+                            <img src="~/Images/@Model.Imagen" width=100 />
+                        </div>*@
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 invoice-col">
+
+                            <address>
+                                <strong>Vendedor: </strong><br>
+                                <span class="text-gray"> @Model.Solicitudes.Pedido.Vendedor </span><br />
+                            </address>
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                    <!-- Table row -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                @*<div class="card-header">
+                                    <a href="@Url.Action("TallasAgregar","Inventario", new { idProd = Model.Id})" class="btn btn-primary btn-sm">Agregar Tallas</a>
+                                </div>*@
+                                <!-- /.card-header -->
+                                <div class="card-body"  style="overflow-x: auto;">
+                                    <table id="example2" class="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Cod.</th>
+                                                <th>Imagen</th>
+                                                <th>Descripción</th>
+                                                <th>Observacion</th>
+                                                <th>Talla</th>
+                                                <th>Área</th>
+                                                @*<th>Acciones</th>*@
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.Solicitudes.DetalleSolicituds)
+                                            {
+                                            <tr>
+                                                <td>@item.Id</td>
+                                                <td>
+                                                    <img src="~/Images/@item.ReservasProduc.DetalleTalla.Producto.Imagen" width="150" />
+                                                </td>
+                                                <td>@item.ReservasProduc.DetalleTalla.Producto.NombreProducto</td>
+                                                <td>@item.Observacion</td>
+
+                                                <td>@item.ReservasProduc.DetalleTalla.Talla.NombreTalla</td>
+
+                                                @*<td>
+
+        </td>*@
+
+                                                @*<td style="width:60px">
+            <a href="@Url.Action("EliminarTallaProd", "Talla", new { id = item.Id})" class="btn btn-danger btn-sm">
+                <i class="fas fa-trash-alt"></i>
+            </a>
+        </td>*@
+
+
+                                                <td class="text-center">
+
+                                                    <span class="badge badge-secondary"> @item.Produccion.Area</span>
+                                                    @*<br /><br />
+
+            @Html.DropDownList("Areas", Model.Areas, new { @class = "form-control" })
+            <br />
+            <button class="btn btn-primary btn-xs cambiarArea">Cambiar</button>*@
+
+
+                                                </td>
+                                            </tr>
+                                            }
+
+                                        </tbody>
+                                        <tfoot>
+
+                                            <tr>
+                                                <th>Cod.</th>
+                                                <th>Imagen</th>
+                                                <th>Descripción</th>
+                                                <th>Observacion</th>
+                                                <th>Talla</th>
+                                                <th>Área</th>
+                                            </tr>
+
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+
+                    @*<div class="row no-print">
+                            <div class="col-12">
+                                <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                                <button type="button" class="btn btn-success float-right">
+                                    <i class="far fa-credit-card"></i> Submit
+                                    Payment
+                                </button>
+                                <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
+                                    <i class="fas fa-download"></i> Generate PDF
+                                </button>
+                            </div>
+                        </div>*@
+                </div>
+                <!-- /.invoice -->
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+
+@section scripts{
+    
+    <script>
+        // script para cambiar el estado
+
+        $(".cambiarEstado").click(function (e) {
+            e.preventDefault();
+
+            var parent = $(this).parent().parent();
+
+
+            var child = parent.children('td');
+            console.log(child);
+
+            var i = 0;
+
+            var data = new Array();
+
+            child.each(function () {
+
+                switch (i)
+                {
+                    case 0:
+                        data[0] = $(this).text();
+
+                    case 4:
+                        var selecteds = $(this).children('select#Estados').children("option").filter(":selected");
+                        data[1] = selecteds;
+
+                        break;
+                }
+                i++;
+
+            });
+
+            var datos = JSON.stringify({
+                IdDetalle: data[0],
+                IdEstado: parseInt(data[1].val())
+            });
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                data: datos,
+                url: "/Produccion/CambiarEstadoProductoProduccion/",
+                success: function (result, state) {
+                    location.reload();
+                },
+                error: function () {
+                    alert("Un error interno ha ocurrido.")
+                }
+
+            });
+
+        });
+
+        // se que hay que evitar repetir codigo pero, por falta de tiempo, lo hice asi de rapido.
+        // aun queda que simplificar codigo.
+        // script para cambiar el area
+
+        $(".cambiarArea").click(function (e) {
+            e.preventDefault();
+
+            var parent = $(this).parent().parent();
+
+
+            var child = parent.children('td');
+            console.log(child);
+
+            var i = 0;
+
+            var data = new Array();
+
+            child.each(function () {
+
+                switch (i) {
+                    case 0:
+                        data[0] = $(this).text();
+
+                    case 5:
+                        var selecteds = $(this).children('select#Areas').children("option").filter(":selected");
+                        data[1] = selecteds;
+
+                        break;
+                }
+                i++;
+
+            });
+
+           
+
+            var datos = JSON.stringify({
+                IdDetalle: data[0],
+                IdArea: parseInt(data[1].val())
+            });
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                data: datos,
+                url: "/Produccion/CambiarAreas/",
+                success: function (result, state) {
+                    location.reload();
+                },
+                error: function () {
+                    alert("Un error interno ha ocurrido.")
+                }
+
+            });
+
+        });
+
+
+
+    </script>
+    
+    }
+
+
+
+

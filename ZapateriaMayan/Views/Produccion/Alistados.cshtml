@@ -1,0 +1,723 @@
+﻿@model ZapateriaMayan.ViewModels.SolicitudesAlistado
+
+@{ ViewBag.Title = "Solicitudes";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+@Html.Partial("_Mensaje")
+
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Alistados</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Producción</a></li>
+                    <li class="breadcrumb-item active">Alistados</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+        <div class="row mb-2">
+            @*<div class="col-12">
+                    <a href="@Url.Action("NuevaSolicitud","Produccion")" class="btn btn-primary">Generar Solicitud</a>
+                </div>*@
+        </div>
+
+
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+
+            </div>
+        </div>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">En Alistado</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">No aceptados</a>
+            </li>
+
+        </ul>
+
+
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Lista de productos en el area de alistado.</h3>
+                        <div>
+                            <a href="" class="btn btn-outline-primary btn-xs float-right" style="margin:0.2em">
+                                <i class="fas fa-th-large"></i>
+                            </a>
+                            <a href="" class="btn btn-primary btn-xs float-right" style="margin: 0.2em">
+                                <i class="fas fa-list "></i>
+                            </a>
+                        </div>
+
+                    </div>
+
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <a class="btn btn-primary float-right btn-sm text-white" id="cambiarAreaE">Trasladar a Ensuelado</a>
+
+                        <table id="tabla-alistados" class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Cod.</th>
+                                    <th class="text-red">Ref. Solicitud</th>
+                                    <th class="text-red">Ref. Pedido</th>
+                                    <th>Imagen</th>
+                                    <th>Talla</th>
+                                    <th>Observacion</th>
+                                    <th>Atraso por</th>
+                                    <th>Area</th>
+                                    <th>Vendedor</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="tabla-Alistadoss">
+                                @foreach (var detalle in Model.DetalleSolicitud)
+                                {
+
+                                <tr>
+
+                                    @*onclick = "location.href = '@Url.Action("DetalleSolicitud", "Produccion", new { id = detalle.SolicitudesId })'"*@
+
+                                    <td class="idd">  @detalle.Id </td>
+                                    <td class="text-red">
+                                        @detalle.SolicitudesId
+                                    </td>
+                                    <td class="text-red"> @detalle.Solicitudes.PedidoId</td>
+
+                                    <td>
+                                        <img src="~/Images/@detalle.ReservasProduc.DetalleTalla.Producto.Imagen" width="150" />
+                                    </td>
+                                    <td class="text-lg  text-bold">
+                                        @detalle.ReservasProduc.DetalleTalla.Talla.NombreTalla
+                                    </td>
+                                    <td class="text-lg">
+                                        @detalle.Observacion
+                                    </td>
+                                    <td class="text-center speciall">
+
+                                        <div class="form-group clearfix">
+                                            <div class="icheck-primary d-inline">
+                                                @*<input type="checkbox" id="" class="falta-Textil" style="width: 20px; height: 20px">*@
+                                                @Html.CheckBoxFor(a => detalle.FaltaDeTextil, new { @class = "falta-Textil", @style = "width: 20px; height: 20px" })
+                                                <label>Falta de textil</label>
+                                            </div>
+                                            <br />
+                                            <div class="icheck-primary d-inline">
+                                                @*<input type="checkbox" id="" class="falta-HiloA" style="width: 20px; height: 20px">*@
+                                                @Html.CheckBoxFor(a => detalle.FaltaDeHilo, new { @class = "falta-HiloA", @style = "width: 20px; height: 20px" })
+
+                                                <label>Falta de Hilo</label>
+                                            </div>
+                                            <br />
+
+                                            <div class="icheck-primary d-inline">
+                                                @*<input type="checkbox" id="" class="falta-ForroA" style="width: 20px; height: 20px">*@
+                                                @Html.CheckBoxFor(a => detalle.FaltaDeForro, new { @class = "falta-ForroA", @style = "width: 20px; height: 20px" })
+                                                <label>Falta de Forro</label>
+                                            </div>
+                                            <br />
+
+                                            <div class="icheck-primary d-inline">
+                                                @*<input type="checkbox" id="" class="otrosA" style="width: 20px; height: 20px">*@
+                                                @Html.CheckBoxFor(a => detalle.OtrosAlistados, new { @class = "otrosA", @style = "width: 20px; height: 20px" })
+                                                <label>Otros</label>
+                                            </div>
+                                        </div>
+
+                                        <button class="btn btn-primary btn-sm informarA">Informar</button>
+                                    </td>
+
+                                    <td class="text-center">
+
+                                        @detalle.Produccion.Area
+                                        <br /><br />
+                                        @*@Html.DropDownList("Areas", Model.Areas, new { @class = "form-control" })*@
+
+                                        @*<button class="btn btn-primary btn-xs cambiarArea">Trasladar</button>*@
+
+                                        <div class="form-group clearfix">
+                                            <div class="icheck-primary d-inline">
+                                                <input type="checkbox" id="checkboxPrimary1" class="checkboxAlistados" style="width: 25px; height: 25px">
+                                                <label for="checkboxPrimary1">
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                    <td>
+                                        @detalle.Solicitudes.Pedido.Vendedor
+                                    </td>
+
+
+                                    <td class="text-center">
+
+                                        @*<a class="btn btn-primary btn-xs" href="@Url.Action("ModificarContacto", "Clientes", new { id = cliente.Id})"><i class="fas fa-edit"></i></a>*@
+                                        <a class="btn btn-danger btn-sm" href="@Url.Action("DetalleSolicitud", "Produccion", new { id = detalle.SolicitudesId })"><i class="fas fa-info-circle"></i> Info</a>
+
+
+                                    </td>
+                                    @*<td class="text-center">
+            <a class="btn btn-success btn-sm" href="@Url.Action("","", new { })"> <i class="fas fa-check"></i></a>
+
+        </td>*@
+                                </tr>
+}
+
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Cod.</th>
+                                    <th class="text-red">Ref. Solicitud</th>
+                                    <th class="text-red">Ref. Pedido</th>
+                                    <th>Imagen</th>
+                                    <th>Talla</th>
+                                    <th>Observacion</th>
+                                    <th>Estado</th>
+                                    <th>Area</th>
+                                    <th>Vendedor</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+
+
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Lista de productos en Alistado NO ACEPTADOS - PRIORIDAD ALTA</h3>
+                        <div>
+                            <a href="" class="btn btn-outline-primary btn-xs float-right" style="margin:0.2em">
+                                <i class="fas fa-th-large"></i>
+                            </a>
+                            <a href="" class="btn btn-primary btn-xs float-right" style="margin: 0.2em">
+                                <i class="fas fa-list "></i>
+                            </a>
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <a class="btn btn-primary float-right btn-sm text-white" id="cambiarAreaE-no-aceptado">Trasladar a Ensuelado</a>
+
+                        <table id="tabla-alistados-no-aceptados" class="table table-bordered table-striped table-hover">
+
+                            <thead>
+                                <tr>
+                                    <th>Cod.</th>
+                                    <th class="text-red">Ref. Solicitud</th>
+                                    <th class="text-red">Ref. Pedido</th>
+                                    <th>Imagen</th>
+                                    <th>Talla</th>
+                                    <th>Observacion</th>
+                                    <th>Estado</th>
+                                    <th>Area</th>
+                                    <th>Vendedor</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var detalle in Model.DetalleSolicituds)
+                                {
+
+
+                                    if (detalle.Prioridad == true)
+                                    {
+                                <tr>
+
+
+                                    <td>  @detalle.Id </td>
+                                    <td class="text-red">
+                                        @detalle.SolicitudesId
+                                    </td>
+                                    <td class="text-red"> @detalle.Solicitudes.PedidoId</td>
+
+                                    <td>
+                                        <img src="~/Images/@detalle.ReservasProduc.DetalleTalla.Producto.Imagen" width="150" />
+                                    </td>
+                                    <td class="text-lg  text-bold">
+                                        @detalle.ReservasProduc.DetalleTalla.Talla.NombreTalla
+                                    </td>
+
+                                    <td class="text-lg">
+                                        @detalle.Observacion
+                                    </td>
+
+                                    <td class="text-center">
+
+                                        <div class="form-group clearfix">
+                                            <div class="icheck-primary d-inline">
+                                                @*<input type="checkbox" id="" class="falta-Textil" style="width: 20px; height: 20px">*@
+                                                @Html.CheckBoxFor(a => detalle.FaltaDeTextil, new { @class = "falta-TextilNA", @style = "width: 20px; height: 20px" })
+                                                <label>Falta de textil</label>
+                                            </div>
+                                            <br />
+                                            <div class="icheck-primary d-inline">
+                                                @*<input type="checkbox" id="" class="falta-HiloA" style="width: 20px; height: 20px">*@
+                                                @Html.CheckBoxFor(a => detalle.FaltaDeHilo, new { @class = "falta-HiloANA", @style = "width: 20px; height: 20px" })
+
+                                                <label>Falta de Hilo</label>
+                                            </div>
+                                            <br />
+
+                                            <div class="icheck-primary d-inline">
+                                                @*<input type="checkbox" id="" class="falta-ForroA" style="width: 20px; height: 20px">*@
+                                                @Html.CheckBoxFor(a => detalle.FaltaDeForro, new { @class = "falta-ForroANA", @style = "width: 20px; height: 20px" })
+                                                <label>Falta de Forro</label>
+                                            </div>
+                                            <br />
+
+                                            <div class="icheck-primary d-inline">
+                                                @*<input type="checkbox" id="" class="otrosA" style="width: 20px; height: 20px">*@
+                                                @Html.CheckBoxFor(a => detalle.OtrosAlistados, new { @class = "otrosANA", @style = "width: 20px; height: 20px" })
+                                                <label>Otros</label>
+                                            </div>
+                                        </div>
+
+                                        <button class="btn btn-primary btn-sm informarNA">Informar</button>
+                                    </td>
+
+                                    <td class="text-center">
+
+                                        @detalle.Produccion.Area
+                                        <br /><br />
+                                        @*@Html.DropDownList("Areas", Model.Areas, new { @class = "form-control" })*@
+
+                                        @*<button class="btn btn-primary btn-xs cambiarArea">Trasladar</button>*@
+
+                                        <div class="form-group clearfix">
+                                            <div class="icheck-primary d-inline">
+                                                <input type="checkbox" id="checkboxPrimary1" class="checkboxAlistados" style="width: 25px; height: 25px">
+                                                <label for="checkboxPrimary1">
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </td>
+
+                                    <td>
+                                        @detalle.Solicitudes.Pedido.Vendedor
+                                    </td>
+
+                                    <td class="text-center">
+
+                                        @*<a class="btn btn-primary btn-xs" href="@Url.Action("ModificarContacto", "Clientes", new { id = cliente.Id})"><i class="fas fa-edit"></i></a>*@
+                                        <a class="btn btn-danger btn-sm" href="@Url.Action("DetalleSolicitud", "Produccion", new { id = detalle.SolicitudesId })"><i class="fas fa-info-circle"></i> Info</a>
+
+
+                                    </td>
+                                </tr>
+}
+
+
+            }
+
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Cod.</th>
+                                    <th class="text-red">Ref. Solicitud</th>
+                                    <th class="text-red">Ref. Pedido</th>
+                                    <th>Imagen</th>
+                                    <th>Talla</th>
+                                    <th>Observacion</th>
+                                    <th>Estado</th>
+                                    <th>Area</th>
+                                    <th>Vendedor</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+        </div>
+
+
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+@section scripts{
+
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Scripts/dataTables.responsive.min.js"></script>
+
+
+    <script>
+        $(function () {
+            $("#tabla-alistados").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "ordering": false
+            });
+        });
+
+
+        $(function () {
+            $("#tabla-alistados-no-aceptados").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+                "ordering": false
+            });
+        });
+    </script>
+
+    <script>
+        // otra manera de hacerlo pero usando JS puro
+
+        // capturar cada fila de la tabla para que se cargue el checkbox
+        //$(function addRowHandlers() {
+        //    var table = document.getElementById("tabla-alistados");
+        //    var rows = table.getElementsByTagName("tr");
+        //    for (i = 0; i < rows.length; i++) {
+        //        var currentRow = table.rows[i];
+        //        var createClickHandler = function (row) {
+        //            return function () {
+        //                var cell = row.getElementsByTagName("td")[0];
+        //                var id = cell.innerHTML;
+        //                alert("id:" + id);
+        //            };
+        //        };
+        //        currentRow.onclick = createClickHandler(currentRow);
+        //    }
+        //});
+
+        // usando jquery
+        //$("#tabla-alistados tr").click(function () {
+        //    //alert($(this).children("td").html());
+
+        //    var child = $(this).children("td");
+
+        //    var i = 0;
+        //    var data = new Array();
+
+        //    child.each(function () {
+
+        //        switch (i) {
+        //            case 7:
+        //                //var selecteds = $(this).children('select#Areas').children("option").filter(":selected");
+        //                //data[1] = selecteds;
+        //                data[0] = $(this).children().children().children('input.checkboxAlistados');
+
+        //                if (data[0][0].checked === true) {
+        //                    data[0][0].checked = false;
+
+        //                } else {
+        //                    data[0][0].checked = true;
+
+        //                }
+
+        //                break;
+        //        }
+        //        i++;
+
+        //    });
+
+        //});
+       
+
+        //$("#tabla-alistados-no-aceptados tr").click(function () {
+        //    //alert($(this).children("td").html());
+            
+        //    var child = $(this).children("td");
+
+        //    var i = 0;
+        //    var data = new Array();
+
+        //    child.each(function () {
+
+        //        switch (i) {
+        //            case 7:
+        //                //var selecteds = $(this).children('select#Areas').children("option").filter(":selected");
+        //                //data[1] = selecteds;
+        //                data[0] = $(this).children().children().children('input.checkboxAlistados');
+
+        //                if (data[0][0].checked === true) {
+        //                    data[0][0].checked = false;
+
+        //                } else {
+        //                    data[0][0].checked = true;
+
+        //                }
+
+        //                break;
+        //        }
+        //        i++;
+
+        //    });
+
+        //});
+
+
+    </script>
+
+
+
+    <script>
+        // script para cambiar el estado
+
+
+
+        // se que hay que evitar repetir codigo pero, por falta de tiempo, lo hice asi de rapido.
+        // aun queda que simplificar codigo.
+        // script para cambiar el area
+
+        $("#cambiarAreaE").click(function (e) {
+            e.preventDefault();
+
+
+            // otra manera
+            var checkedIds = new Array();
+            //loop through tbody > class checkboxAlistados
+            var selectors = $("#tabla-alistados tbody .checkboxAlistados:checked");
+            selectors.each(function () {
+                //get closest tr and then get Cod value
+                checkedIds.push($(this).closest('tr').find("td:eq(0)").text())
+
+            });
+            console.log(checkedIds);
+
+            var datos = JSON.stringify({
+                Ids: checkedIds,
+            });
+
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                data: datos,
+                url: "/Produccion/CambiarAreas/",
+                success: function (result, state) {
+                    alert(result);
+                    location.reload();
+                },
+                error: function () {
+                    alert("Un error interno ha ocurrido.")
+                }
+
+            });
+
+
+        });
+
+
+        $("#cambiarAreaE-no-aceptado").click(function (e) {
+            e.preventDefault();
+
+            // mi codigo
+            //var checkedIds = [];
+            //var i = 0;
+
+            //var table = $("#tabla-alistados tr td").children().children().children(".checkboxAlistados");
+            //var idTable = $("#tabla-alistados tr td");
+
+
+            //for (var i = 0; i < table.length; i++) {
+            //    if (table[i].checked) {
+            //        checkedIds.push(idTable[1].innerHTML);
+            //    }
+
+            //}
+
+
+            // otra manera
+            var checkedIds = new Array();
+            //loop through tbody > class checkboxAlistados
+            var selectors = $("#tabla-alistados-no-aceptados tbody .checkboxAlistados:checked");
+            selectors.each(function () {
+                //get closest tr and then get Cod value
+                checkedIds.push($(this).closest('tr').find("td:eq(0)").text())
+
+            });
+            console.log(checkedIds);
+
+            var datos = JSON.stringify({
+                Ids: checkedIds,
+            });
+
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                data: datos,
+                url: "/Produccion/CambiarAreas/",
+                success: function (result, state) {
+                    alert(result);
+                    location.reload();
+                },
+                error: function () {
+                    alert("Un error interno ha ocurrido.")
+                }
+
+            });
+
+
+        });
+
+
+
+        // informar - aceptados
+
+        $(".informarA").click(function (e) {
+            e.preventDefault();
+
+            var parent = $(this).parent().parent();
+            var child = parent.children('td');
+
+
+            console.log(child);
+
+
+            var i = 0;
+            var data = new Array();
+
+            child.each(function () {
+
+                switch (i) {
+                    case 0:
+                        data[0] = $(this).text();
+                        break;
+                    
+                    case 5:
+
+                        data[1] = $(child).children().children().children('input.falta-Textil').is(":checked");
+                        data[2] = $(child).children().children().children('input.falta-HiloA').is(":checked");
+                        data[3] = $(child).children().children().children('input.falta-ForroA').is(":checked");
+                        data[4] = $(child).children().children().children('input.otrosA').is(":checked");
+                        break;
+                }
+                i++;
+
+            });
+
+
+            var datos = JSON.stringify({
+                Id: data[0],
+                FaltaDeTextil: data[1],
+                FaltaDeHilo: data[2],
+                FaltaDeForro: data[3],
+                OtrosAlistados: data[4],
+            });
+
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                data: datos,
+                url: "/Produccion/ActualizarFaltasA/",
+                success: function (result, state) {
+                    //alert(result);
+                    location.reload();
+                },
+                error: function () {
+                    alert("Un error interno ha ocurrido.")
+                }
+
+            });
+
+
+        });
+
+
+
+
+        // informar - No aceptados
+
+        $(".informarNA").click(function (e) {
+            e.preventDefault();
+
+            var parent = $(this).parent().parent();
+            var child = parent.children('td');
+
+
+            console.log(child);
+
+
+            var i = 0;
+            var data = new Array();
+
+            child.each(function () {
+
+                switch (i) {
+                    case 0:
+                        data[0] = $(this).text();
+                        break;
+
+                    case 5:
+
+                        data[1] = $(child).children().children().children('input.falta-TextilNA').is(":checked");
+                        data[2] = $(child).children().children().children('input.falta-HiloANA').is(":checked");
+                        data[3] = $(child).children().children().children('input.falta-ForroANA').is(":checked");
+                        data[4] = $(child).children().children().children('input.otrosANA').is(":checked");
+                        break;
+                }
+                i++;
+
+            });
+
+
+            var datos = JSON.stringify({
+                Id: data[0],
+                FaltaDeTextil: data[1],
+                FaltaDeHilo: data[2],
+                FaltaDeForro: data[3],
+                OtrosAlistados: data[4],
+            });
+
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                data: datos,
+                url: "/Produccion/ActualizarFaltasA/",
+                success: function (result, state) {
+                    //alert(result);
+                    location.reload();
+                },
+                error: function () {
+                    alert("Un error interno ha ocurrido.")
+                }
+
+            });
+
+
+        });
+
+    </script>
+
+
+
+}
+
+

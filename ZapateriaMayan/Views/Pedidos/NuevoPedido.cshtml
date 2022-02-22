@@ -1,0 +1,1008 @@
+﻿
+@{ ViewBag.Title = "Nuevo Pedido";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-3">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Crear pedido</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Pedidos</a></li>
+                    <li class="breadcrumb-item active">crear</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div>
+</div>
+
+@Html.Partial("_PedidosForm")
+
+
+
+
+@section scripts{
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Scripts/dataTables.responsive.min.js"></script>
+    <script src="~/Scripts/select2.full.min.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+
+    <script src="~/Scripts/daterangepicker.js"></script>
+    <script src="~/Scripts/tempusdominus-bootstrap-4.min.js"></script>
+
+
+    <script>
+        // setear los precios a mayoristas.
+        var checkbox = document.getElementById('customSwitch1')
+
+        checkbox.addEventListener('change', (event) => {
+            if (event.target.checked) {
+                $(".precio-mayorista").css("display", "block");
+                $(".precio-normal").css("display", "none");
+            } else {
+                $(".precio-mayorista").css("display", "none");
+                $(".precio-normal").css("display", "block");
+            }
+        })
+
+    </script>
+
+    <script>
+
+        //$(document).ready(function () {
+        //    $("div.cliente-nuevo").hide();
+
+        //    $("input[name$='tipocliente']").click(function () {
+        //        var valuee = $(this).val();
+
+        //        if (valuee === "r") {
+        //            $(".cliente-recurrente").show();
+        //            $(".cliente-nuevo").hide();
+
+        //        } else {
+
+        //            $(".cliente-nuevo").show();
+        //            $(".cliente-recurrente").hide();
+
+        //        }
+
+        //        alert(valuee)
+        //        //$("div.cliente-recurrente").hide();
+        //        //$("#" + test).show();
+        //    });
+        //});
+
+        //$("#asp").click(function (e) {
+        //    e.preventDefault();
+
+        //    var valuee = $("input[name$='tipocliente']");
+        //    alert(valuee.val())
+        //});
+
+
+        $(document).ready(function () {
+            $("#tipocliente").change(function () {
+                $(this).find("option:selected").each(function () {
+                    var optionValue = $(this).attr("value");
+                    if (optionValue) {
+                        $(".row.c").not("." + optionValue).hide();
+                        $("." + optionValue).show();
+                    } else {
+                        $(".row.c").hide();
+                    }
+                });
+            }).change();
+        });
+
+
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+            });
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+
+
+    </script>
+
+
+
+    <script>
+        $(function () {
+            $('.select2').select2()
+
+        });
+
+        $('#reservationtime').daterangepicker({
+            timePicker: true,
+            timePickerIncrement: 30,
+            locale: {
+                format: 'MM/DD/YYYY hh:mm A'
+            }
+        });
+
+        $('#reservationtime2').daterangepicker({
+            timePicker: true,
+            timePickerIncrement: 30,
+            locale: {
+                format: 'MM/DD/YYYY hh:mm A'
+            }
+        })
+
+
+        $("#dropdown").on('change', function () {
+            var getValue = $(this).val();
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: "/Clientes/RetornarDatosCliente/" + getValue,
+                success: function (result, state) {
+
+                    console.log(result);
+                    var direccion = document.getElementById("direccioncr");
+                    var telefono = document.getElementById("telefonocr");
+                    var capital = document.getElementById("customRadio1");
+                    var interior = document.getElementById("customRadio2");
+                    var facebook = document.getElementById("fbcliente");
+                    var whatsapp = document.getElementById("whatscliente");
+                    var instagram = document.getElementById("instacliente");
+
+
+                    direccion.value = result.Direccion;
+                    telefono.value = result.Telefono1;
+                    facebook.textContent = result.Facebook;
+                    whatsapp.textContent = result.Whatsapp;
+                    instagram.textContent = result.Instagram;
+
+
+                    if (result.Region == "Capital") {
+                        capital.checked = true;
+
+                    } else {
+                        interior.checked = true;
+                    }
+
+                }
+
+            });
+        });
+
+
+        //$('#dropdown').select2({});
+
+        //$('#dropdown').on("select2:opening", function(e) {
+        //                $.ajax({
+        //                contentType: 'application/json; charset=utf-8',
+        //                dataType: 'json',
+        //                type: 'GET',
+        //                url: "/Clientes/ObtenerListaClientes/",
+        //                success: function (result, state) {
+
+        //                    console.log(result);
+        //                    var s = '<option>Selecciones...</option>';
+
+        //                    for (var i = 0; i < result.length; i++) {
+        //                        s += '<option value="' + result[i].Id + '">' + result[i].Nombres + '</option>';
+        //                    }
+
+        //                    $("#dropdown").html(s);
+        //                }
+
+        //            });
+        //});
+
+
+
+        //$(document).on('focus', '.select2-search__field', function (e) {
+        //    alert("a");
+        //    $.ajax({
+        //        contentType: 'application/json; charset=utf-8',
+        //        dataType: 'json',
+        //        type: 'GET',
+        //        url: "/Clientes/ObtenerListaClientes/",
+        //        success: function (result, state) {
+
+        //            var s = '<option value="-1">Seleccione...</option>';
+
+        //            for (var i = 0; i < result.length; i++) {
+        //                s += '<option value="' + result[i].Id + '">' + result[i].Nombres + '</option>';
+        //            }
+
+        //            $("#dropdown").html(s);
+        //        }
+
+        //    });
+        //    });
+    </script>
+
+    <script>
+        //var productosagregados = []
+
+        $(".agregarDetallePedido").click(function (e) {
+            e.preventDefault();
+
+
+            var parent = $(this).parent().parent()
+            var child = parent.children('td');
+            var i = 0;
+
+            var data = new Array();
+
+            child.each(function () {
+
+                switch (i) {
+                    case 0:
+                        data[0] = $(this).text();
+                        break;
+                    case 2: parent
+                        data[2] = $(this).text();
+
+                        break;
+
+                    case 3:
+                        var selecteds = $(this).children('select#cars').children("option").filter(":selected");
+                        data[3] = selecteds;
+
+                        break;
+
+                    case 4:
+                        data[4] = $(this).children('textarea').val();
+                        break;
+
+                    case 5:
+                        data[5] = $(this).children('input').val();
+                        break;
+
+
+                    case 6:
+                        data[6] = $(this).find("span:visible").text();
+                        break;
+
+                    case 7:
+                        data[7] = $(this).children('input').val();
+                        break;
+                }
+
+                i++;
+
+            });
+
+
+            var capvalor = parseFloat(parseFloat(data[6]).toFixed(2) * Math.floor(data[5])).toFixed(2);
+            var disc = parseFloat(data[7] / 100).toFixed(2);
+
+            var descresta = parseFloat(capvalor * disc).toFixed(2)
+            var totadesc = parseFloat(capvalor - descresta).toFixed(2);
+
+            // Asegurarnos que no hayan campos vacios. Evitamos errores y codigo largo :)
+            if (data[3].val() === "" || data[5] === "") {
+                alert("Hay campos vacíos");
+                return;
+            }
+
+            var reserva = 0;
+
+            // Revisar si la talla tiene existencia en el inventario.
+
+            var datos = JSON.stringify({
+                cantidad: parseInt(data[5])
+            });
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                data: datos,
+                url: "/Inventario/VerificarExistencias/" + data[3].val(),
+                success: function (result, state) {
+
+                    if (result !== 0) {
+                        var r = confirm("No hay existencias, Faltan: " + result);
+                        reserva = result;
+
+                        if (r == true) {
+                            for (var i = 0; i < result; i++) {
+                                $('#detallesolicitud').append("<tr>"
+                                    + "<td>" + data[0] + "</td>"
+                                    + "<td>" + data[2] + "</td>"
+                                    + "<td>" + data[3].text() + "</td>"
+                                    + "<td style='display: none;'>" + data[3].val() + "</td>"
+                                    + "<td>" + data[6] + "</td>"
+                                    + "<td>" + '<a onclick="deleteRow(this)" class="btn btn-danger btn-sm text-white"><i class="fas fa-trash-alt"></i></a>' + "</td>"
+                                    + "<td style='display:none'>" + data[4] + "</td></tr > ");
+                            }
+                        } else {
+
+                            return; // no hace nada
+                        }
+
+                    }
+                    //var index = $.inArray(data[0], productosagregados);
+
+                    $('#detallepedido').append("<tr>"
+                        + "<td>" + data[0] + "</td>"
+                        + "<td>" + data[2] + "</td>"
+                        + "<td>" + data[3].text() + "</td>"
+                        + "<td style='display: none;'>" + data[3].val() + "</td>"
+                        + "<td>" + Math.abs(Math.floor(data[5])) + "</td>"
+                        + "<td>" + parseFloat(Math.abs(parseFloat(data[6]))).toFixed(2) + "</td>"
+                        + "<td class='subtotal-fila'>" + capvalor + "</td>"
+                        + "<td class='desc-fila'>" + descresta + "</td>"
+                        + "<td class='tota-sub-fila'>  " + totadesc + "</td>"
+                        + "<td>" + '<a onclick="deleteRow(this)" class="btn btn-danger btn-sm text-white"><i class="fas fa-trash-alt"></i></a>' + "</td>"
+                        + "<td style='color: red' class='reserva-value'>" + reserva + "</td>"
+                        + "<td>" + (data[5] - reserva) + "</td>"
+                        + "<td style='display:none'>" + data[4] + "</td></tr > ");
+                        
+
+                    //productosagregados.push(data[0]);
+                    getTotal();
+
+
+
+                },
+                error: function () {
+                    alert("Un error interno ha ocurrido.")
+                }
+
+            });
+
+            function getTotal() {
+                var total = 0;
+                var desc = 0;
+                var subtotal = 0
+                $('.tota-sub-fila').each(function () {
+                    total += parseFloat(this.innerHTML)
+                });
+
+                $('.desc-fila').each(function () {
+                    desc += parseFloat(this.innerHTML)
+                });
+
+                $('.subtotal-fila').each(function () {
+                    subtotal += parseFloat(this.innerHTML)
+                });
+
+                $('#total-value').text(parseFloat(total).toFixed(2));
+                $('#descuento-value').text(parseFloat(desc).toFixed(2));
+                $('#subtotal-value').text(parseFloat(subtotal).toFixed(2));
+
+
+
+            }
+            //getTotal();
+        });
+
+
+        // borrar fila de tabla
+        function deleteRow(r) {
+            var i = r.parentNode.parentNode.rowIndex;
+            document.getElementById("mytablec").deleteRow(i);
+            getTotal();
+
+            //var child = r.parentNode.parentNode.children;
+            //console.log(child)
+
+
+            //alert(child[3].innerHTML);
+
+        }
+
+
+
+        function getTotal() {
+            var total = 0;
+            var desc = 0;
+            var subtotal = 0
+            $('.tota-sub-fila').each(function () {
+                total += parseFloat(this.innerHTML)
+            });
+
+            $('.desc-fila').each(function () {
+                desc += parseFloat(this.innerHTML)
+            });
+
+            $('.subtotal-fila').each(function () {
+                subtotal += parseFloat(this.innerHTML)
+            });
+
+            $('#total-value').text(parseFloat(total).toFixed(2));
+            $('#descuento-value').text(parseFloat(desc).toFixed(2));
+            $('#subtotal-value').text(parseFloat(subtotal).toFixed(2));
+        }
+
+    </script>
+
+
+    <script>
+        $("#crear-pedido").click(function (e) {
+            e.preventDefault();
+
+            var total = 0;
+            var table = document.getElementById("mytablec");
+
+            // verificar si el detalle esta vacio
+            if (table.rows.length <= 1) {
+                alert("Debe haber por lo menos un producto.")
+                return;
+            }
+
+
+            $('.reserva-value').each(function () {
+                total += parseFloat(this.innerHTML)
+            });
+
+            if (total !== 0) {
+                alert("No se puede crear un pedido con reservas a producción. Las reservas(a fabricar) son el resto de productos que normalmente se mandana producción.")
+                return;
+            }
+
+
+            var tot = document.getElementById("total-value").innerHTML;
+            var subtot = document.getElementById("subtotal-value").innerHTML;
+            var desc = document.getElementById("descuento-value").innerHTML;
+
+
+            if ($("#tipocliente :selected").val() == "cliente-recurrente") {
+
+
+                if ($("#dropdown").val().trim() == "") {
+                    alert("Debe haber por lo menos un cliente.")
+                    return;
+                }
+
+                var fechas = ($(".fecha-entregacr").val()).split(" - ");
+                var radiochecked = "";
+                var radiocheckedTipoContacto = "";
+
+                // para internos y capital
+                var radios = document.getElementsByName('Regionc');
+                for (var i = 0, length = radios.length; i < length; i++) {
+                    if (radios[i].checked) {
+                        radiochecked = radios[i].value;
+                        break;
+                    }
+                }
+
+
+                //tipo de contacto
+                var radioTipoContacto = document.getElementsByName('TipoContactocr');
+                for (var i = 0, length = radioTipoContacto.length; i < length; i++) {
+                    if (radioTipoContacto[i].checked) {
+                        radiocheckedTipoContacto = radioTipoContacto[i].value;
+                        break;
+                    }
+                }
+
+
+                var detallepedido = [];
+                detallepedido.length = 0;
+
+                var Observaciones = []; 
+
+
+                $.each($("#mytablec tbody tr"), function () {
+                    Observaciones.push($(this).find('td:eq(12)').html())
+
+                    detallepedido.push({
+                        DetalleTallaId: $(this).find('td:eq(3)').html(),
+                        Cantidad: $(this).find('td:eq(4)').html(),
+                        Precio: $(this).find('td:eq(5)').html(),
+                        SubTotal: $(this).find('td:eq(6)').html(),
+                        Descuento: $(this).find('td:eq(7)').html(),
+                        Total: $(this).find('td:eq(8)').html(),
+                    });
+                });
+
+
+
+
+
+                var data = JSON.stringify({
+                    observaciones: Observaciones,
+                    // datos de detalle
+                    pedido: detallepedido,
+                    //datos de pedido
+                    ClienteId: $("#dropdown").val(),
+                    Direccion: $("#direccioncr").val(),
+                    SubTotal: subtot,
+                    Descuento: desc,
+                    Total: tot,
+                    Inicio: fechas[0],
+                    Final: fechas[1],
+                    Region: radiochecked,
+                    Observacion: $("#Observacioncr").val(),
+                    Telefonoc: $("#telefonocr").val(),
+                    ContactoPrincipal: radiocheckedTipoContacto
+                });
+
+                $.when(enviar(data)).then(function (response) {
+                    console.log(response);
+                }).fail(function (err) {
+                    console.log(err);
+                });
+
+
+
+            }
+            else {
+
+                //alert($("#nombrescn").val().trim());
+
+                if ($("#nombrescn").val().trim() === "" && $("#apellidoscn").val().trim() === "" || $("#telefono1cn").val().trim() === "" || $("#direccioncn").val().trim() === "") {
+                    alert("Nombre, Apellidos, Teléfono y Dirección son obligatorios.");
+                    return;
+                }
+
+
+                var fechass = ($(".fecha-entregacn").val()).split(" - ");
+                var radiocheckedc = "";
+                var TipoContactocn = "";
+
+
+                var radioss = document.getElementsByName('Regioncn');
+                for (var i = 0, length = radioss.length; i < length; i++) {
+                    if (radioss[i].checked) {
+                        radiocheckedc = radioss[i].value;
+                        break;
+                    }
+                }
+
+
+                //tipo de contactoS
+                var radioTipoContactos = document.getElementsByName('TipoContactocn');
+                for (var i = 0, length = radioTipoContactos.length; i < length; i++) {
+                    if (radioTipoContactos[i].checked) {
+                        TipoContactocn = radioTipoContactos[i].value;
+                        break;
+                    }
+                }
+
+
+                var detallepedidocn = [];
+                detallepedidocn.length = 0;
+
+
+                $.each($("#mytablec tbody tr"), function () {
+                    detallepedidocn.push({
+                        DetalleTallaId: $(this).find('td:eq(3)').html(),
+                        Cantidad: $(this).find('td:eq(4)').html(),
+                        Precio: $(this).find('td:eq(5)').html(),
+                        SubTotal: $(this).find('td:eq(6)').html(),
+                        Descuento: $(this).find('td:eq(7)').html(),
+                        Total: $(this).find('td:eq(8)').html(),
+                    });
+                });
+
+
+                var datacn = JSON.stringify({
+                    // datos de detalle
+                    pedido: detallepedidocn,
+                    //datos del cliente
+                    Nombres: $("#nombrescn").val(),
+                    Apellidos: $("#apellidoscn").val(),
+                    Telefono1: $("#telefono1cn").val(),
+                    Telefono2: $("#telefono2cn").val(),
+                    Direccion: $("#direccioncn").val(),
+                    Whatsapp: $("#whatsappcn").val(),
+                    Facebook: $("#facebookcn").val(),
+                    Instagram: $("#instragramcn").val(),
+                    Region: radiocheckedc,
+                    // datos del pedido
+                    SubTotal: subtot,
+                    Descuento: desc,
+                    Total: tot,
+                    Observacion: $("observacioncn").val(),
+                    ContactoPrincipal: TipoContactocn,
+                    Inicio: fechass[0],
+                    Final: fechass[1]
+                });
+
+
+                $.when(enviarcn(datacn)).then(function (response) {
+                    console.log(response);
+                }).fail(function (err) {
+                    console.log(err);
+                });
+
+
+            }
+
+        });
+
+        function enviar(data) {
+            console.log(data);
+            return $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: "/Pedidos/Procesar",
+                data: data,
+                success: function (result) {
+                    alert(result);
+                    location.reload();
+                },
+                error: function () {
+                    alert("SE HA PRODUCIDO UN ERROR, REVISE SI LA INFORMACIÓN ESTA COMPLETA Y CORRECTA");
+                }
+            });
+        }
+
+        function enviarcn(data) {
+            console.log(data);
+            return $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: "/Pedidos/Procesarcn",
+                data: data,
+                success: function (result) {
+                    alert(result);
+                    location.reload();
+                },
+                error: function () {
+                    alert("SE HA PRODUCIDO UN ERROR, REVISE SI LA INFORMACIÓN ESTA COMPLETA Y CORRECTA");
+                }
+            });
+        }
+
+
+    </script>
+
+    <script>
+        $("#mod-cliente").click(function (e) {
+            e.preventDefault();
+
+            var component = $("#dropdown").val();
+
+            if (component == "") {
+                return;
+            }
+
+            window.open("/Clientes/ModificarContacto/" + component, 'mywin', 'width=800,height=800');
+
+            //$.ajax({
+            //    contentType: 'application/json; charset=utf-8',
+            //    dataType: 'json',
+            //    type: 'POST',
+            //    url: "/Clientes/ModificarContacto/" + component,
+            //    success: function (result, state) {
+
+
+            //    },
+            //    error: function(e){
+            //        alert("Se ha producido un error interno, vuelva a recargar la página.")
+            //    }
+
+
+            //});
+
+
+        });
+    </script>
+
+    <script>
+        $('select#cars').change(function (e) {
+            e.preventDefault();
+
+            var tallavalue = $(this).children("option").filter(":selected");
+
+            $select = $(this),
+                $span = $select.parent().find('.existencias-talla')
+
+
+
+            var datos = JSON.stringify({
+                valuee: tallavalue.val()
+            });
+
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: "/Inventario/RetornarExistencia/",
+                data: datos,
+                success: function (result) {
+
+                    //$(".existencias-talla").html(result);
+                    $span.html(result);
+
+                },
+                error: function () {
+                    alert("SE HA PRODUCIDO UN ERROR, REVISE SI LA INFORMACIÓN ESTA COMPLETA Y CORRECTA");
+                }
+            });
+
+        });
+    </script>
+
+
+
+    @*guardar a borrador*@
+
+    <script>
+        $("#guardar-borrador").click(function (e) {
+            e.preventDefault();
+
+            var table = document.getElementById("mytablec");
+
+            // verificar si el detalle esta vacio
+            if (table.rows.length <= 1) {
+                alert("Debe haber por lo menos un producto.");
+                return;
+            }
+
+            var tot = document.getElementById("total-value").innerHTML;
+            var subtot = document.getElementById("subtotal-value").innerHTML;
+            var desc = document.getElementById("descuento-value").innerHTML;
+
+
+            if ($("#tipocliente :selected").val() == "cliente-recurrente") {
+
+
+                if ($("#dropdown").val().trim() == "") {
+                    alert("Debe haber por lo menos un cliente.");
+                    return;
+                }
+
+                var fechas = ($(".fecha-entregacr").val()).split(" - ");
+                var radiochecked = "";
+                var radiocheckedTipoContacto = "";
+
+                // para internos y capital
+                var radios = document.getElementsByName('Regionc');
+                for (var i = 0, length = radios.length; i < length; i++) {
+                    if (radios[i].checked) {
+                        radiochecked = radios[i].value;
+                        break;
+                    }
+                }
+
+
+                //tipo de contacto
+                var radioTipoContacto = document.getElementsByName('TipoContactocr');
+                for (var i = 0, length = radioTipoContacto.length; i < length; i++) {
+                    if (radioTipoContacto[i].checked) {
+                        radiocheckedTipoContacto = radioTipoContacto[i].value;
+                        break;
+                    }
+                }
+
+
+                var Observaciones = [];
+                
+
+                var detallereservas = [];
+                detallereservas.length = 0;
+
+
+                var detallesolicitud = [];
+                detallesolicitud.length = 0;
+
+
+                $.each($("#mytablec tbody tr"), function () {
+                    Observaciones.push($(this).find('td:eq(12)').html())
+
+                    detallereservas.push({
+                        DetalleTallaId: $(this).find('td:eq(3)').html(),
+                        CantidadSolicitada: $(this).find('td:eq(4)').html(),
+                        Precio: $(this).find('td:eq(5)').html(),
+                        SubTotal: $(this).find('td:eq(6)').html(),
+                        Descuento: $(this).find('td:eq(7)').html(),
+                        Total: $(this).find('td:eq(8)').html(),
+
+                        Cantidad: $(this).find('td:eq(11)').html(),
+                        CantidadReserva: $(this).find('td:eq(10)').html()                       
+
+
+                    });
+                });
+
+
+                $.each($("#mytablesolis tbody tr"), function () {
+                    detallesolicitud.push({
+                        Descripcion: $(this).find('td:eq(1)').html(),
+                        Talla: $(this).find('td:eq(2)').html(),
+                        DetalleTallaId: $(this).find('td:eq(3)').html(),
+                        Observacion: $(this).find('td:eq(6)').html()
+
+                    });
+                });
+
+
+
+                var data = JSON.stringify({
+                    observaciones: Observaciones,
+                    // datos de detalle
+                    reservas: detallereservas,
+                    solicitudes: detallesolicitud,
+                    //datos de pedido
+                    ClienteId: $("#dropdown").val(),
+                    Direccion: $("#direccioncr").val(),
+                    SubTotal: subtot,
+                    Descuento: desc,
+                    Total: tot,
+                    Inicio: fechas[0],
+                    Final: fechas[1],
+                    Region: radiochecked,
+                    Observacion: $("#Observacioncr").val(),
+                    Telefonoc: $("#telefonocr").val(),
+                    ContactoPrincipal: radiocheckedTipoContacto
+                });
+
+                $.when(b_enviar_cr(data)).then(function (response) {
+                    console.log(response);
+                }).fail(function (err) {
+                    console.log(err);
+                });
+
+
+
+            }
+            else {
+
+                //alert($("#nombrescn").val().trim());
+
+                if ($("#nombrescn").val().trim() === "" && $("#apellidoscn").val().trim() === "" || $("#telefono1cn").val().trim() === "" || $("#direccioncn").val().trim() === "") {
+                    alert("Nombre, Apellidos, Teléfono y Dirección son obligatorios.");
+                    return;
+                }
+
+
+                var fechass = ($(".fecha-entregacn").val()).split(" - ");
+                var radiocheckedc = "";
+                var TipoContactocn = "";
+
+
+                var radioss = document.getElementsByName('Regioncn');
+                for (var i = 0, length = radioss.length; i < length; i++) {
+                    if (radioss[i].checked) {
+                        radiocheckedc = radioss[i].value;
+                        break;
+                    }
+                }
+
+
+                //tipo de contacto
+                var radioTipoContactos = document.getElementsByName('TipoContactocn');
+                for (var i = 0, length = radioTipoContactos.length; i < length; i++) {
+                    if (radioTipoContactos[i].checked) {
+                        TipoContactocn = radioTipoContactos[i].value;
+                        break;
+                    }
+                }
+
+
+                var detallepedidocn = [];
+                detallepedidocn.length = 0;
+
+
+                var detallesolicitud = [];
+                detallesolicitud.length = 0;
+
+
+                $.each($("#mytablec tbody tr"), function () {
+                    detallepedidocn.push({
+                        DetalleTallaId: $(this).find('td:eq(3)').html(),
+                        CantidadSolicitada: $(this).find('td:eq(4)').html(),
+                        Precio: $(this).find('td:eq(5)').html(),
+                        SubTotal: $(this).find('td:eq(6)').html(),
+                        Descuento: $(this).find('td:eq(7)').html(),
+                        Total: $(this).find('td:eq(8)').html(),
+
+                        Cantidad: $(this).find('td:eq(11)').html(),
+                        CantidadReserva: $(this).find('td:eq(10)').html(),
+                    });
+                });
+
+
+                $.each($("#mytablesolis tbody tr"), function () {
+                    detallesolicitud.push({
+                        Descripcion: $(this).find('td:eq(1)').html(),
+                        Talla: $(this).find('td:eq(2)').html(),
+                        DetalleTallaId: $(this).find('td:eq(3)').html(),
+
+                    });
+                });
+
+
+                var datacn = JSON.stringify({
+                    // datos de detalle
+                    reservas: detallepedidocn,
+                    solicitudes: detallesolicitud,
+                    //datos del cliente
+                    Nombres: $("#nombrescn").val(),
+                    Apellidos: $("#apellidoscn").val(),
+                    Telefono1: $("#telefono1cn").val(),
+                    Telefono2: $("#telefono2cn").val(),
+                    Direccion: $("#direccioncn").val(),
+                    Whatsapp: $("#whatsappcn").val(),
+                    Facebook: $("#facebookcn").val(),
+                    Instagram: $("#instragramcn").val(),
+                    Region: radiocheckedc,
+                    // datos del pedido
+                    SubTotal: subtot,
+                    Descuento: desc,
+                    Total: tot,
+                    Observacion: $("observacioncn").val(),
+                    ContactoPrincipal: TipoContactocn,
+                    Inicio: fechass[0],
+                    Final: fechass[1]
+                });
+
+
+                $.when(c_enviarcn(datacn)).then(function (response) {
+                    console.log(response);
+                }).fail(function (err) {
+                    console.log(err);
+                });
+
+
+            }
+
+        });
+
+        function b_enviar_cr(data) {
+            console.log(data);
+            return $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: "/Borrador/GuardarABorrador_cr",
+                data: data,
+                success: function (result) {
+                    alert(result);
+                    location.reload();
+                },
+                error: function () {
+                    alert("SE HA PRODUCIDO UN ERROR, REVISE SI LA INFORMACIÓN ESTA COMPLETA Y CORRECTA");
+                }
+            });
+        }
+
+        function c_enviarcn(data) {
+            console.log(data);
+            return $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: "/Borrador/GuardarABorrador_cn",
+                data: data,
+                success: function (result) {
+                    alert(result);
+                    location.reload();
+                },
+                error: function () {
+                    alert("SE HA PRODUCIDO UN ERROR, REVISE SI LA INFORMACIÓN ESTA COMPLETA Y CORRECTA");
+                }
+            });
+        }
+
+
+    </script>
+
+}
+
+@section select2{
+    <link rel="stylesheet" href="~/Content/select2.min.css">
+    <link rel="stylesheet" href="~/Content/daterangepicker.css">
+
+}
+

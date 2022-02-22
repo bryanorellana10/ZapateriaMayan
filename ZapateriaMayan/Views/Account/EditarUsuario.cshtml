@@ -1,0 +1,129 @@
+﻿@model ZapateriaMayan.ViewModels.UsersViewModel
+
+
+<div class="card-body">
+    @Html.Partial("_Mensaje")
+            <br />
+            <section class="content">
+
+                <div class="container-fluid">
+
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-navy">
+                                <div class="card-header">
+                                    <h3 class="card-title">Información del usuario</h3>
+                                </div>
+                                @using(Html.BeginForm("EditarEmailUsuario", "Account", new { id = Model.User.Id}))
+                                {
+                                    
+                                    <div class="card">
+
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <a href="@Url.Action("RoleMaintenance", "Account", new { id = Model.User.Id })">
+                                                        <span class="btn btn-danger btn-sm">Cambiar rol</span>
+                                                    </a>
+
+                                                    @if (Model.User.IsInactive == true)
+                                                    {
+                                        <a href="@Url.Action("UnBlockUser", "Account", new { id = Model.User.Id })">
+                                            <span class="btn btn-danger btn-sm">Desbloquear</span>
+                                        </a> }
+                                                    else
+                                                    {
+                                        <a href="@Url.Action("BlockUser", "Account", new { id = Model.User.Id })">
+                                            <span class="btn btn-success btn-sm">Bloquear</span>
+                                        </a>}
+
+
+                                                </div>
+                                            </div>
+
+                                            <br />
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label>Nombre de usuario: </label>
+                                                    @Html.TextBoxFor(u => Model.User.Name, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(u => Model.User.Name, "", new { @class = "text-danger" })
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label>Email: </label>
+                                                    @Html.TextBoxFor(u => Model.User.UserName, new { @class = "form-control", @readonly = "readonly" })
+                                                    @Html.ValidationMessageFor(u => Model.User.UserName, "", new { @class = "text-danger" })
+                                                </div>
+
+
+                                            </div>
+                                            <br />
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div>
+                                                        <button type="submit" class="btn btn-info btn-sm">Actualizar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        </div>
+                                }
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="card card-navy">
+                                <div class="card-header">
+                                    <h3 class="card-title">Información del usuario</h3>
+                                </div>
+
+                                @using (Html.BeginForm("UpdateNewPasswordByAdmin", "Account", new { id = Model.User.Id }))
+                                {
+                                    <div class="card">
+
+
+                                        <div class="card-body">
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label>Nueva contraseña: </label>
+                                                    @Html.TextBoxFor(u => Model.NewPassword, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(u => Model.NewPassword, "", new { @class = "text-danger" })
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label>Confirmar Contraseña: </label>
+                                                    @Html.TextBoxFor(u => Model.ConfirmPassword, new { @class = "form-control" })
+                                                    @Html.ValidationMessageFor(u => Model.ConfirmPassword, "", new { @class = "text-danger" })
+                                                </div>
+
+                                            </div>
+                                            <br />
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <button type="submit" class="btn btn-info">Cambiar Contraseña</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                }
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+
+</div>

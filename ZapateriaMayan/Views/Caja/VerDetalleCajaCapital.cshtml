@@ -1,0 +1,527 @@
+﻿@model  ZapateriaMayan.ViewModels.CajaCapitalViewModel
+@{ ViewBag.Title = "Apertura de Caja - Capital";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+@{ decimal TotalIngresos = 0.00M;    decimal TotalEgresos = 0.00M; }
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+<br />
+<br />
+
+@using (Html.BeginForm())
+    {
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-7" style="float:none;margin:auto;">                
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Acciones caja - Capital</h3>
+                    </div>
+                    <div class="card-body">
+                        
+                        <div class="row align-content-center">
+                            @if (Model.CajaCapital.EstadoCaja == true)
+                        {
+                            <div class="col-3" style="text-align:center">
+                                <a onclick="openModal({},11)" class="btn btn-warning text-white"><i class="fas fa-money-check-alt"></i> &nbsp; Nuevo Ingreso</a>
+                            </div>
+                            <div class="col-3" style="text-align:center">
+                                <a onclick="openModal({},12)" class="btn btn-danger text-white"><i class="fas fa-sign-out-alt"></i> &nbsp; Nuevo Egreso</a>
+                            </div>
+                            <div class="col-3" style="text-align:center">
+                                <a data-toggle="modal" data-target="#exampleModalCierre" class="btn btn-warning text-white"><i class="fas fa-window-close"></i> &nbsp; Cierre Caja</a>
+                            </div>
+                            }
+                            <div class="col-3" style="text-align:center">
+                                <button type="button" onclick="location.href='@Url.Action("ReporteCajaDetail","Caja", new { id = Model.CajaCapital.Id})'" class="btn btn-primary">
+                                    <i class="fas fa-download"></i> Generar Reporte
+                                </button>
+                            </div>
+
+                        </div>
+                                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>}
+
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="card  bg-gradient-white">
+            <div class="card-body">
+                <h3>Ventas</h3>
+                <hr />
+                <table id="Ventas" class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th># Venta</th>
+                            <th># Pedido</th>
+                            <th>Ruta</th>
+                            <th>Cliente</th>
+                            <th>Vend.</th>
+                            <th>Mens</th>
+                            <th>Egreso Ent.</th>
+                            <th>Precio Producto</th>
+                            <th>Ingreso Real</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.CajaCapital.DetalleCajaCapitals.Where(a => a.VentasCapitalId != null || a.VentasCapitalId > 0))
+                        {
+                            TotalIngresos += item.Ingreso;
+                            TotalEgresos += item.Gasto;
+                            var ValorReal = item.Ingreso - item.Gasto;
+                        <tr>
+                            <td><span> @item.VentasCapitalId</span></td>
+                            <td>@item.VentasCapital.DespachosCapital.PedidoId</td>
+                            <td>@item.VentasCapital.DespachosCapital.EnviosCapitals.SingleOrDefault().Rutas.Descripcion</td>
+                            <td>@item.VentasCapital.DespachosCapital.Pedido.Cliente.Nombres</td>
+                            <td>@item.VentasCapital.DespachosCapital.Pedido.Vendedor</td>
+                            <td>@item.VentasCapital.DespachosCapital.EnviosCapitals.SingleOrDefault().Despachador.Nombres</td>
+                            <td>@item.Gasto</td>
+                            <td>
+                                @item.Ingreso
+                            </td>
+                            <td>@ValorReal</td>
+                        </tr>}
+                    </tbody>
+                </table>
+                <br />
+                <br />
+
+
+                <div class="row">
+                    <div class="col-6">
+                        <h3>Ingresos</h3>
+                        <hr />
+                        <table id="IngresosManuales" class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Descripción Ingresos (Otros)</th>
+                                    <th>Valor</th>
+                                    <th style="width: 105px">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.CajaCapital.DetalleCajaCapitals.Where(a => a.Ingreso > 0 && (a.VentasCapitalId == null)))
+                                {
+                                    TotalIngresos += item.Ingreso;
+                    <tr>
+                        <td>@item.Descripcion</td>
+                        <td>@item.Ingreso</td>
+                        <td>
+                            @if (Model.CajaCapital.EstadoCaja == true)
+                            {
+                            <a class="btn btn-danger btn-sm text-white" onclick="EliminarDetalleCajaCapital(@item.Id)">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                            <a class="btn btn-info btn-sm text-white" onclick="openModal({ id: @item.Id , value: @item.Ingreso , desc: '@item.Descripcion'},1)">
+                                <i class="far fa-edit"></i>
+                            </a>}
+                        </td>
+                    </tr>}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-6">
+
+
+                        <h3>Egresos</h3>
+                        <hr />
+                        <table id="EgresosManuales" class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Descripción Egresos (Otros)</th>
+                                    <th>Valor</th>
+                                    <th style="width: 105px">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.CajaCapital.DetalleCajaCapitals.Where(a => a.Gasto > 0 && (a.VentasCapitalId == null)))
+                                {
+                                    TotalEgresos += item.Gasto;
+                    <tr>
+                        <td>@item.Descripcion</td>
+                        <td>@item.Gasto</td>
+                        <td>
+                            @if (Model.CajaCapital.EstadoCaja == true)
+                            {
+                            <a class="btn btn-danger btn-sm text-white" onclick="EliminarDetalleCajaCapital(@item.Id)">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                            <a class="btn btn-info btn-sm text-white" onclick="openModal({ id: @item.Id , value: @item.Gasto , desc: '@item.Descripcion'},2)">
+                                <i class="far fa-edit"></i>
+                            </a>}
+
+
+                        </td>
+                    </tr>}
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <div class="row">    
+        <div class="col-3">
+        </div>        
+        <div class="col-9">
+            <p class="lead">Monto cierre</p>
+            <div class="table-responsive">
+                <table class="table">
+                    <tr>
+                        <th style="width:50%">Total Egresos:</th>
+                        <td>Q @TotalEgresos</td>
+                    </tr>
+                    <tr>
+                        <th>Total Ingresos:</th>
+                        <td>Q @TotalIngresos</td>
+                    </tr>
+                    <tr class="bg-teal">
+                        <th>Total Cierre:</th>
+                        <td>
+                            <b>
+                                @{ decimal TotalC = TotalIngresos - TotalEgresos; }
+                                Q @TotalC
+                            </b>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>        
+    </div>
+</section>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-gradient-warning">
+                <h5 class="modal-title" id="EditI">Agregar Ingreso</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formIngreso">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <div class="form-group">
+                                <label> Descripción</label>
+                                <textarea required id="Descripcion" class="form-control" type="text" rows="1"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label> Monto </label>
+                                <input required id="Monto" class="form-control" type="number" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="AddDetailButton" >Agregar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalE" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-gradient-danger">
+                <h5 class="modal-title" id="EditE">Agregar Egreso</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formEgreso">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <div class="form-group">
+                                <label> Descripción</label>
+                                <textarea required id="DescripcionEC" class="form-control" type="text" rows="1"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label> Monto </label>
+                                <input required id="MontoEC" class="form-control" type="number" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="AddDetailButtonE" >Agregar</button>
+                </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="modal fade" id="exampleModalCierre" tabindex="-1" role="dialog" aria-labelledby="exampleModalCierre" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-gradient-warning">
+                <h5 class="modal-title" id="exampleModalLongTitle">¿Está seguro/a que desea cerrar esta caja?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="AddDetailButton" onclick="CerrarCajaCapital()">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Scripts/dataTables.responsive.min.js"></script>
+    <script src="~/Scripts/select2.full.min.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+
+    <script src="~/Scripts/daterangepicker.js"></script>
+    <script src="~/Scripts/tempusdominus-bootstrap-4.min.js"></script>
+
+    
+    <script>
+        var edit = false;
+        var id = 0;
+
+        $("#formEgreso").submit(function (event) {
+            event.preventDefault();
+            AddDetailIEC();
+        });
+
+
+        $("#formIngreso").submit(function (event) {
+            event.preventDefault();
+            AddDetailIC();
+        });
+
+
+        function openModal(data, modal) {
+            edit = true;
+            if (modal == 1) {
+                edit = true;
+                id = data.id
+                $("#exampleModalLong").modal()
+                $("#EditI").html("Modificar Ingreso")
+                $('#Monto').val(data.value)
+                $('#Descripcion').val(data.desc)
+                $("#AddDetailButton").html("Modificar")
+            } else if (modal == 2) {
+                edit = true;
+                id = data.id
+                $("#exampleModalE").modal()
+                $('#MontoEC').val(data.value)
+                $('#DescripcionEC').val(data.desc)
+                $("#EditE").html("Modificar Egreso")
+                $("#AddDetailButtonE").html("Modificar")
+
+
+            } else if (modal == 11) {
+                edit = false;
+                $("#exampleModalLong").modal()
+                $("#EditI").html("Agregar Ingreso")
+                $('#Monto').val("")
+                $('#Descripcion').val("")
+                $("#AddDetailButton").html("Agregar")
+            } else if (modal == 12) {
+                edit = false;
+                $("#exampleModalE").modal()
+                $("#EditE").html("Agregar Egreso")
+                $('#MontoEC').val("")
+                $('#DescripcionEC').val("")
+                $("#AddDetailButtonE").html("Agregar")
+            }
+
+
+
+
+
+        }
+
+
+
+        function AddDetailIC() {
+            $("#AddDetailButton").prop('disabled', true)
+
+            var data = {
+                monto: $('#Monto').val(),
+                descripcion: $('#Descripcion').val(),
+                id: id
+
+            };
+            var url = ""
+            if (edit) {
+                url = '@Url.Action("IngresoCajaCapitalEdit", "Caja")'
+            } else {
+                url = '@Url.Action("IngresoCajaCapital", "Caja")'
+            }
+
+            $.ajax({
+                type: "post",
+                url: url,
+                data: data,
+                contenttype: 'application/json; charset=utf-8',
+                datatype: 'json',
+                error: function () {
+                    alert("No se ha podido insertar el dato.");
+                    $('#exampleModalLong').modal('hide');
+                    $("#AddDetailButton").prop('disabled', false)
+                },
+                success: function (result) {
+
+                    if (edit) {
+                        alert("Ingreso modificado exitosamente.");
+                    } else {
+                        alert("Ingreso insertado exitosamente.");
+                    }
+                    
+                    $("#AddDetailButton").prop('disabled', false)
+                    $('#exampleModalLong').modal('hide');
+                    location.reload();
+                }
+            });
+
+        }
+
+
+        function AddDetailIEC() {
+            $("#AddDetailButtonE").prop('disabled', true)
+
+            var data = {
+                monto: $('#MontoEC').val(),
+                descripcion: $('#DescripcionEC').val(),
+                id: id
+            };
+            var url = ""
+
+            if (edit) {
+                url = '@Url.Action("EgresoCajaCapitalEdit", "Caja")'
+            } else {
+                url = '@Url.Action("EgresoCajaCapital","Caja")'
+            }
+
+            $.ajax({
+                type: "post",
+                url: url,
+                data: data,
+                contenttype: 'application/json; charset=utf-8',
+                datatype: 'json',
+                error: function () {
+                    alert("No se ha podido insertar el dato.");
+                    $('#exampleModalLong').modal('hide');
+                    $("#AddDetailButtonE").prop('disabled', false)
+                },
+                success: function (result) {
+                    if (edit) {
+                        alert("Egreso modificado exitosamente.");
+                    } else {
+                        alert("Egreso insertado exitosamente.");
+                    }
+                    $("#AddDetailButtonE").prop('disabled', false)
+                    $('#exampleModalLong').modal('hide');
+                    location.reload();
+
+                }
+            });
+
+        }
+
+        function CerrarCajaCapital() {
+            $("#AddDetailButtonE").prop('disabled', true)
+
+            $.ajax({
+                type: "post",
+                url: '@Url.Action("CerrarCajaCapital","Caja")',
+                contenttype: 'application/json; charset=utf-8',
+                datatype: 'json',
+                error: function () {
+                    alert("No se ha podido hacer la operación.");
+                    $('#exampleModalLong').modal('hide');
+                    $("#AddDetailButtonE").prop('disabled', false)
+                },
+                success: function (result) {
+                    $("#AddDetailButtonE").prop('disabled', false)
+                    $('#exampleModalLong').modal('hide');
+                    alert("La caja se ha cerrado.");
+                    window.location.href ="/Caja/IndexCajaCapital"
+
+                }
+            });
+
+        }
+
+
+
+        function EliminarDetalleCajaCapital(Id)
+        {
+
+            var datos = {
+                id: Id
+            };
+
+            if (confirm("¿Está seguro/a de eliminar este elemento de la caja?"))
+            {
+
+                 $.ajax({
+                     type: "post",
+                     data: datos,
+                    url: '@Url.Action("EliminarDetalleCapital", "Caja")',
+                    contenttype: 'application/json; charset=utf-8',
+                    datatype: 'json',
+                    error: function () {
+                        alert("No se ha podido hacer la operación.");
+
+                    },
+                    success: function (result) {
+                        alert(result);
+                        window.location.href = "/Caja/VerDetalleCajaCapital/" + @Model.CajaCapital.Id ;
+
+                    }
+            });
+            }
+        }
+
+    </script>
+
+}
+
+@section select2{
+    <link rel="stylesheet" href="~/Content/select2.min.css">
+    <link rel="stylesheet" href="~/Content/daterangepicker.css">
+
+}

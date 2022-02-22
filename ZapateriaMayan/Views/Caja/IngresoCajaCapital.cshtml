@@ -1,0 +1,67 @@
+﻿@model ZapateriaMayan.ViewModels.CajaCapitalViewModel
+
+@{ ViewBag.Title = "Ingresos Capital";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+
+@Html.Partial("_Mensaje")
+@using (Html.BeginForm())
+{
+<br />
+                <br />
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6" style="float:none;margin:auto;">
+                            <!-- general form elements -->
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Datos de Ingreso</h3>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label>Caja # @Model.Id</label>
+                                                @*@Html.TextBoxFor(m => m.Pedido.Id, new { @class = "form-control", @readonly = true })*@
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label>Descripción</label>
+                                                @Html.TextAreaFor(m => m.DetalleCajaCapital.Descripcion, new { @class = "form-control select2" })
+                                                @Html.ValidationMessageFor(m => m.DetalleCajaCapital.Descripcion, "", new { @class = "text-danger" })
+                                                @*@Html.TextBoxFor(m => m.DespachosInterior.Peso, new { @class = "form-control" })*@
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label>Monto</label>
+                                                @Html.TextBoxFor(m => m.DetalleCajaCapital.Ingreso, new { @class = "form-control select2" })
+                                                @Html.ValidationMessageFor(m => m.DetalleCajaCapital.Ingreso, "", new { @class = "text-danger" })
+                                                @*@Html.TextBoxFor(m => m.DespachosInterior.Peso, new { @class = "form-control" })*@
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary">Aceptar</button>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </section>}
+
+

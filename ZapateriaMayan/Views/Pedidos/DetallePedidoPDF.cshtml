@@ -1,0 +1,118 @@
+﻿@model ZapateriaMayan.ViewModels.PedidoViewModel
+
+@{ ViewBag.Title = "DetallesProducto";
+    Layout = "~/Views/Shared/_LayoutPedidoDetalle.cshtml"; }
+@{ decimal Total = 0;}
+
+<div style="padding-left: 2%;padding-right: 2%">
+    <img src="~/Images/logoss.jpg" />
+    <h1>Información Pedido</h1>
+
+    <table class="table table-bordered">
+        <tr>
+            <td> <h3><strong>Cliente: &nbsp;</strong></h3></td>
+            <td> <h3><span class="text-gray"> @Model.Pedido.Cliente.Nombres </span> </h3></td>
+            <td> <h3><strong>Región: &nbsp;</strong></h3></td>
+            <td> <h3><span class="text-gray"> @Model.Pedido.Region </span> </h3></td>
+        </tr>
+        <tr>
+            <td> <h3><strong>Medio de contacto: &nbsp;</strong></h3></td>
+            <td>
+                <h3>
+
+                    @if (Model.Pedido.ContactoPrincipal == "Telefono")
+                    {
+        <span class="text-gray"> @Model.Pedido.ContactoPrincipal - @Model.Pedido.Telefonoc </span><br /> }
+    else if (Model.Pedido.ContactoPrincipal == "Facebook")
+    {
+    <span class="text-gray"> @Model.Pedido.ContactoPrincipal - @Model.Pedido.Cliente.Facebook </span><br /> }
+else if (Model.Pedido.ContactoPrincipal == "Instagram")
+{
+    <span class="text-gray"> @Model.Pedido.ContactoPrincipal - @Model.Pedido.Cliente.Instagram </span><br /> }
+else if (Model.Pedido.ContactoPrincipal == "Instagram")
+{
+    <span class="text-gray"> @Model.Pedido.ContactoPrincipal - @Model.Pedido.Cliente.Whatsapp </span><br />}
+                </h3>
+            </td>
+            <td> <h3><strong>Teléfono: &nbsp;</strong></h3></td>
+            <td> <h3><span class="text-gray"> @Model.Pedido.Telefonoc </span> </h3></td>
+
+
+        </tr>
+        <tr>
+            <td> <h3><strong>Desde: &nbsp;</strong></h3></td>
+            <td> <h3><span class="text-gray"> @Model.Pedido.Inicio</span> </h3></td>
+            <td> <h3><strong>Hasta: &nbsp;</strong></h3></td>
+            <td> <h3><span class="text-gray"> @Model.Pedido.Final </span> </h3></td>
+        </tr>
+
+        <tr>
+            <td> <h3><strong>Dirección: &nbsp;</strong></h3></td>
+            <td colspan="3"> <h3><span class="text-gray"> @Model.Pedido.Direccion</span> </h3></td>
+        </tr>
+
+        @if (Model.Pedido.Region == "Capital")
+        {
+    <tr>
+        <td> <h3><strong>Observaciones: &nbsp;</strong></h3></td>
+        <td colspan="3"> <h3><span class="text-gray"> @Model.Pedido.DespachosCapitals.SingleOrDefault().Comentario</span> </h3></td>
+    </tr> }
+                else if (Model.Pedido.Region == "Interior")
+                {
+    <tr>
+        <td> <h3><strong>Observaciones: &nbsp;</strong></h3></td>
+        <td colspan="3"> <h3><span class="text-gray"> @Model.Pedido.DespachosInteriors.SingleOrDefault().Comentario</span> </h3></td>
+    </tr>}
+
+
+    </table>
+
+    <table class="table table-bordered" style="padding-left:20px;padding-right:20px">        
+            @foreach (var item in ViewBag.productos) {
+        <tr>
+            <td style="width: 300px">
+                <img class="card-img-top" src="~/Images/@item.Imagen" alt="Card image cap" width="300" height="300">
+            </td>
+            <td style="width: 500px; text-align:center">
+                @foreach (var talla in item.DetalleTallas)
+                {
+                    double Cantidad = 0;
+                    foreach (var canti in talla.DetallePedidos) {
+                        Cantidad = Cantidad = canti.Cantidad;
+                    }
+
+                    <h3><strong>@talla.Talla.NombreTalla / @Cantidad </strong></h3>
+                 }
+            </td>               
+                @{ decimal TotalParcial = 0;
+                <td style="width: 500px; text-align:center">
+                    @foreach (var talla in item.DetalleTallas)
+                    {
+                        decimal Parcial = 0;
+                        foreach (var parcial in talla.DetallePedidos)
+                        {
+                            Parcial = Parcial = parcial.Total;
+                        }
+                        Total = Total + Parcial;
+                        TotalParcial = TotalParcial + Parcial;
+                    }
+                    <h3><strong>TOTAL:</strong> Q @TotalParcial</h3>
+                </td>
+                }
+        </tr>                
+            }
+        
+        
+        <tr>
+            <td>
+                <h3><strong>TOTAL: </strong></h3>
+            </td>
+            <td colspan="2" style="text-align:right">
+                <h1> Q @Total</h1>
+            </td>
+        </tr>
+        
+    </table>
+
+            
+</div>

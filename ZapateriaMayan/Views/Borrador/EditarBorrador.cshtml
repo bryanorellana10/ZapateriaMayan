@@ -1,0 +1,1284 @@
+﻿@model ZapateriaMayan.ViewModels.PedidoViewModel
+
+@{
+    ViewBag.Title = "EditarPedido";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <h1 class="m-0 text-danger text-center">Pedido # @Model.Pedido.Id</h1>
+
+    <div class="container-fluid">
+        <div class="row mb-3">
+            <div class="col-sm-12">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Borradores</a></li>
+                    <li class="breadcrumb-item active">Editar borrador</li>
+                </ol>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+        @*<div class="row mb-2">
+                <div class="col-12">
+                    <a href="@Url.Action("NuevoCliente","Clientes")" class="btn btn-primary">Guardar</a>
+                    <a href="@Url.Action("Contactos", "Clientes")" class="btn btn-outline-danger">Cancelar</a>
+                </div>
+            </div>*@
+
+
+    </div>
+</div>
+
+
+
+@*Modal para pedidos*@
+<div class="modal fade" id="modal-xl">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+
+            <div class="card-body" style="overflow-x: auto">
+                <table id="example1" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Cod.</th>
+                            <th>Imagen</th>
+                            <th>Descripción</th>
+                            <th>Talla</th>
+                            <th>Cant.</th>
+                            <th>Precio</th>
+                            <th>Desc. %</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model.Productos)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>
+                                    <img src="~/Images/@item.Imagen" height="100" />
+
+                                </td>
+                                <td>@item.NombreProducto</td>
+
+                                <td>
+
+                                    <select name="cars" id="cars" class="" style="width: 100%">
+                                        <option value=""> ... </option>
+
+                                        @foreach (var talla in item.DetalleTallas)
+                                        {
+                                            <option value="@talla.Talla.Id"> @talla.Talla.NombreTalla </option>
+                                        }
+                                    </select>
+                                    <span class="existencias-talla" style="color:red">X</span>
+
+
+                                </td>
+                                <td>
+                                    <input type="number" value="0" />
+                                </td>
+                                <td>
+                                    @item.Precio
+                                    @*<input type="number" value="@item.Precio"/>*@
+                                </td>
+                                <td>
+                                    <input type="number" value="0" />
+
+                                </td>
+                                <td>
+                                    <button href="" class="btn btn-info btn-sm agregarDetallePedido">
+                                        Agregar
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Cod.</th>
+                            <th>Imagen</th>
+                            <th>Descripción</th>
+                            <th>Talla</th>
+                            <th>Cant.</th>
+                            <th>Precio</th>
+                            <th>Desc. %</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+
+@*modal para solicitudes*@
+
+
+
+<div class="card-body">
+    <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="custom-content-below-home-tab" data-toggle="pill" href="#custom-content-below-home" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Pedidos</a>
+        </li>
+        @*<li class="nav-item">
+            <a class="nav-link" id="custom-content-below-profile-tab" data-toggle="pill" href="#custom-content-below-profile" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Nueva Solicitud</a>
+        </li>*@
+
+        @*<li class="nav-item">
+            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Solicitudes</a>
+        </li>*@
+    </ul>
+    <div class="tab-content" id="custom-content-below-tabContent">
+        <div class="tab-pane fade show active" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
+            <br />
+            <section class="content">
+
+                <div class="container-fluid">
+
+                        <div>
+                            <span class="badge badge-warning">En producción</span>
+
+                        </div>
+
+
+                    <br />
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="card card-navy">
+                                <div class="card-header">
+                                    <h3 class="card-title">Datos pedido</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <!-- form start -->
+
+                                <div class="card">
+
+                                    <div class="card-header">
+                                        @*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-lg">
+                                                Launch Large Modal
+                                            </button>
+
+                                            <button class="btn btn-primary btn-xs"><i class="fas fa-plus-square"></i> &nbsp; Nuevo</button>*@
+
+                                        @*<a href="@Url.Action("NuevoContacto", "Clientes")" target="_blank" class="btn btn-primary btn-xs">
+                                                <i class="fas fa-plus-square"></i> Agregar
+                                            </a>*@
+
+                                        <select id="tipocliente">
+                                            <option value="cliente-recurrente">Cliente Recurrente</option>
+                                            @*<option value="cliente-nuevo">Cliente Nuevo</option>*@
+                                        </select>
+
+                                        <button class="btn btn-primary btn-sm float-right" id="mod-cliente">Modificar</button>
+                                    </div>
+                                    <div class="card-body">
+
+
+
+                                        <div class="cliente-recurrente row c">
+
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+
+                                                    <label>Cliente</label>
+
+                                                    @Html.DropDownListFor(m => m.Pedido.ClienteId, Model.ListaClietnes, "Seleccione...", new { @class = "form-control select2", @style = "width: 100%;", @id = "dropdown", @disabled = "disabled" })
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+
+                                                    <label>Teléfono</label>
+                                                    @*<input class="" type="radio" id="" name="TipoContactocr" value="Telefono" checked="checked">*@
+                                                    @Html.RadioButtonFor(m => m.Pedido.ContactoPrincipal, "Telefono")
+                                                    @Html.TextBoxFor(m => m.Pedido.Telefonoc, new { @class = "form-control", @placeholder = "Teléfono", @id = "telefonocr" })
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+
+                                                    @*@Html.DropDownList("ContactoPrincipal", Model.TipoContactoList, "Seleccione...", new { @class = "form-control select2", @style = "width: 100%;", @id = "" })*@
+                                                    <label> Facebook: <span id="fbcliente" class="text-danger"> @Model.Pedido.Cliente.Facebook</span></label> &nbsp; <span id="fbc" class="text-red"> @Html.RadioButtonFor(m => m.Pedido.ContactoPrincipal, "Facebook") </span> <br />
+                                                    <label> Whatsapp: <span id="whatscliente" class="text-danger">@Model.Pedido.Cliente.Whatsapp</span></label> &nbsp;<span id="whc" class="text-red">  @Html.RadioButtonFor(m => m.Pedido.ContactoPrincipal, "Whatsapp")</span><br />
+                                                    <label> Instagram: <span id="instacliente" class="text-danger"> @Model.Pedido.Cliente.Instagram</span></label>&nbsp;<span id="instac" class="text-red"> @Html.RadioButtonFor(m => m.Pedido.ContactoPrincipal, "Instagram")</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-12">
+
+
+
+
+                                                @*<div class="col-sm-6">
+                    <div class="form-group">
+
+
+
+
+                        <label>Desde</label>
+
+                        <div class="input-group date" id="reservationdate" data-target-input="nearest">
+
+                            @Html.TextBoxFor(d => d.Pedido.Inicio, new { @class = "form-control datetimepicker-input", @data_target = "#reservationdate" })
+                            <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate" />
+                            <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Hasta</label>
+                        @Html.TextBoxFor(m => m.Pedido.Final, new { @class = "form-control", @placeholder = "Inicio Fecha", @id = "telefono" })
+                    </div>
+                </div>*@
+
+                                                <div class="form-group">
+                                                    <label>Fecha de entrega</label>
+
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="far fa-clock"></i></span>
+                                                        </div>
+                                                        <input type="text" class="form-control float-right fecha-entregacr" id="reservationtime">
+                                                    </div>
+                                                    <!-- /.input group -->
+                                                </div>
+
+
+
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>Región</label>
+                                                    <div class="custom-control custom-radio">
+                                                        @Html.RadioButtonFor(m => m.Pedido.Region, "Capital", new { @class = "custom-control-input", @id = "customRadio1", @checked = true })
+                                                        @*<input class="custom-control-input" type="radio" id="customRadio1" name="Regionc" value="Capital" checked="checked">*@
+                                                        <label for="customRadio1" class="custom-control-label">Capital</label>
+                                                    </div>
+                                                    <div class="custom-control custom-radio">
+                                                        @Html.RadioButtonFor(m => m.Pedido.Region, "Interior", new { @class = "custom-control-input", @id = "customRadio2" })
+                                                        @*<input class="custom-control-input" type="radio" id="customRadio2" name="Regionc" value="Interior">*@
+                                                        <label for="customRadio2" class="custom-control-label">Interior</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label>Dirección</label>
+                                                    @Html.TextAreaFor(m => m.Pedido.Direccion, new { @class = "form-control", @placeholder = "Dirección", @rows = 4, @id = "direccioncr" })
+                                                    @*@Html.ValidationMessageFor(m => m.Cliente.Nombres, "", new { @class = "text-danger" })*@
+                                                    @*<input class="form-control" placeholder="Nombres">*@
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label>Observación</label>
+                                                    @Html.TextAreaFor(m => m.Pedido.Observacion, new { @class = "form-control", @placeholder = "Observación", @rows = 4, @id = "Observacioncr" })
+                                                    @*@Html.ValidationMessageFor(m => m.Cliente.Nombres, "", new { @class = "text-danger" })*@
+                                                    @*<input class="form-control" placeholder="Nombres">*@
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary" id="guardar-cambios-p"> <i class="fas fa-save"></i> &nbsp; Guardar cambios</button>
+
+
+
+
+                                    </div>
+                                    <!-- /.card-body -->
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card card-navy">
+                                <div class="card-header">
+                                    <h3 class="card-title">Datos producto</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <!-- form start -->
+
+
+                                <div class="card">
+
+                                    <div class="card-header">
+
+                                        <a href="@Url.Action("AgregarProductosBorrador", "Borrador", new { id = Model.Pedido.Id})" class=" btn btn-danger btn-sm float-right">
+                                            <i class="fas fa-share-square"></i> &nbsp; Agregar productos
+
+                                        </a>
+
+                                        @*<button type="button" class="btn btn-danger btn-sm float-right" data-toggle="modal" data-target="#modal-xl">
+                        <i class="fas fa-share-square"></i> &nbsp; Agregar productos
+                    </button>*@
+
+
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <div class="card-body p-0" style="overflow-x: auto">
+                                        <table class="table table-sm" id="mytablec">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width:1px">Cod.</th>
+                                                    <th>Descripción</th>
+                                                    <th style="width:115px;">Talla</th>
+                                                    <th style="width:1px; display:none">Val</th>
+                                                    <th style="width: 115px;">Cant.</th>
+                                                    <th style="width:115px;">Precio</th>
+                                                    <th style="width:115px;">Subtotal
+                                                    <th style="width:115px;">Desc.</th>
+                                                    <th style="width:115px;">Total</th>
+                                                    <th style="width:60px;">Acción</th>
+                                                    <th style="width:115px; color: red;">En producción</th>
+                                                    <th>P. Reserva</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="detallepedido">
+                                                @foreach (var item in Model.Pedido.ReservasProducs)
+                                                {
+                                                    <tr>
+                                                        <td>@item.DetalleTalla.Producto.Id</td>
+                                                        <td>@item.DetalleTalla.Producto.NombreProducto</td>
+                                                        <td>@item.DetalleTalla.Talla.NombreTalla</td>
+                                                        <td> @item.CantidadSolicitada</td>
+                                                        <td>@item.Precio</td>
+                                                        <td class="subtotal-fila">@item.Subtotal</td>
+                                                        <td class="desc-fila">@item.Descuento</td>
+                                                        <td class="tota-sub-fila">@item.Total</td>
+
+                                                        <td>
+                                                            <a onclick="deleteRow(this)" class="btn btn-danger btn-sm text-white"><i class="fas fa-trash-alt"></i></a>
+                                                        </td>
+
+                                                        <td class="text-danger reserva-value">@item.CantidadReserva</td>
+                                                        <td>@item.Cantidad</td>
+
+
+
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+
+
+                                <div class="text-right" style="margin-right:1.5em">
+                                    <h5>Subtotal: Q <span id="subtotal-value">0.00</span></h5>
+                                    <h5>Descuento: Q <span id="descuento-value">0.00</span></h5>
+                                    <h5>Total: Q <span id="total-value">0.00</span></h5>
+                                </div>
+
+
+                            </div>
+
+                            <div class="float-right">
+                                <button class="btn btn-warning btn-sm" id="finalizar-pedido">Finalizar pedido</button>
+                            </div>
+
+                            <div class="pt-5">
+                                @foreach (var item in Model.Pedido.Solicitudes)
+                                {
+                                    <div class="col-md-12" style="float:none;margin:auto;">
+
+                                        <div class="card card-teal">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Solicitud # @item.Id</h3> <span class="badge badge-secondary float-right"> @item.EstadosProducto.Estado</span>
+                                            </div>
+                                            <div class="card">
+                                               
+                                                <div class="card-body" style="padding:0px">
+
+                                                    @*<button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal-xl-solicitudes">
+                                <i class="fas fa-plus-square"></i> &nbsp; Agregar ítem
+                            </button>*@
+                                                    <div class="card-body p-0" style="overflow-x: auto;padding:0px"  >
+                                                        <table class="table table-sm" id="">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th style="width:55px">Cod.</th>
+                                                                    <th style="width:200px;">Descripción</th>
+                                                                    <th style="width:50px;">Talla</th>
+                                                                    <th style="width:1px; display:none">Val</th>
+                                                                    <th style="width:80px;">Area</th>
+                                                                    <th style="width:160px;">Atrasado por</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="">
+                                                                @foreach (var sol in item.DetalleSolicituds)
+                                                                {
+                                                                <tr>
+                                                                    <td>@sol.Id</td>
+                                                                    <td>@sol.ReservasProduc.DetalleTalla.Producto.NombreProducto</td>
+                                                                    <td>@sol.ReservasProduc.DetalleTalla.Talla.NombreTalla </td>
+                                                                    <td>@sol.Produccion.Area</td>
+                                                                    <td class="text-left speciall">
+
+                                                                        <ul>
+                                                                            @if (sol.Produccion.Area == "Alistado")
+                                                                            {
+                                                                                if (sol.FaltaDeTextil){<li>Falta de textil.</li>}
+                                                                                if (sol.FaltaDeHilo){<li>Falta de hilo.</li>}
+                                                                                if (sol.FaltaDeForro){<li>Falta de forro. </li>} 
+                                                                                if ((!sol.FaltaDeTextil) && (!sol.FaltaDeHilo) && (!sol.FaltaDeForro))
+                                                                                {<li>Sin atraso.</li>} 
+                                                                            }                                                                            
+                                                                            else if (sol.Produccion.Area == "Ensuelado")
+                                                                            {
+                                                                                if (sol.FaltaDeSuela){<li>Falta de suela. </li>}
+                                                                                if (sol.FaltaDePegamento){<li>Falta de pegamento. </li>}
+                                                                                if (sol.CorteEnMalEstado){<li>Corte en mal estado.</li>} 
+                                                                                if ((!sol.FaltaDeSuela) && (!sol.FaltaDePegamento) && (!sol.CorteEnMalEstado))
+                                                                                {<li>Sin atraso.</li>} 
+                                                                            }else{
+                                                                            <li>N/A</li>
+                                                                            }
+                                                                            
+
+
+                                                                        </ul>                                                                        
+                                                                    </td>
+                                                                </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                                   
+
+
+
+
+
+
+
+
+
+                        </div>
+                       
+                    </div>
+                   
+                </div>
+            </section>
+
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@section scripts{
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Scripts/dataTables.responsive.min.js"></script>
+    <script src="~/Scripts/select2.full.min.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+
+    <script src="~/Scripts/daterangepicker.js"></script>
+    <script src="~/Scripts/tempusdominus-bootstrap-4.min.js"></script>
+
+
+
+    <script>
+        //$(document).ready(function () {
+        //    $("div.cliente-nuevo").hide();
+
+        //    $("input[name$='tipocliente']").click(function () {
+        //        var valuee = $(this).val();
+
+        //        if (valuee === "r") {
+        //            $(".cliente-recurrente").show();
+        //            $(".cliente-nuevo").hide();
+
+        //        } else {
+
+        //            $(".cliente-nuevo").show();
+        //            $(".cliente-recurrente").hide();
+
+        //        }
+
+        //        alert(valuee)
+        //        //$("div.cliente-recurrente").hide();
+        //        //$("#" + test).show();
+        //    });
+        //});
+
+        //$("#asp").click(function (e) {
+        //    e.preventDefault();
+
+        //    var valuee = $("input[name$='tipocliente']");
+        //    alert(valuee.val())
+        //});
+
+
+        $(document).ready(function () {
+
+            $("#tipocliente").change(function () {
+                $(this).find("option:selected").each(function () {
+                    var optionValue = $(this).attr("value");
+                    if (optionValue) {
+                        $(".row.c").not("." + optionValue).hide();
+                        $("." + optionValue).show();
+                    } else {
+                        $(".row.c").hide();
+                    }
+                });
+            }).change();
+
+            function getTotal() {
+                var total = 0;
+                var desc = 0;
+                var subtotal = 0
+                $('.tota-sub-fila').each(function () {
+                    total += parseFloat(this.innerHTML)
+                });
+
+                $('.desc-fila').each(function () {
+                    desc += parseFloat(this.innerHTML)
+                });
+
+                $('.subtotal-fila').each(function () {
+                    subtotal += parseFloat(this.innerHTML)
+                });
+
+                $('#total-value').text(parseFloat(total).toFixed(2));
+                $('#descuento-value').text(parseFloat(desc).toFixed(2));
+                $('#subtotal-value').text(parseFloat(subtotal).toFixed(2));
+
+
+
+            }
+
+
+            getTotal();
+
+
+            //$("#reservationtime").val("@Model.Pedido.Inicio.ToString("MM/dd/yyyy hh:mm tt") - @Model.Pedido.Final.ToString("MM/dd/yyyy hh:mm tt")");
+
+        });
+
+
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true,
+                "autoWidth": false,
+            });
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+
+
+
+    </script>
+
+
+
+    <script>
+        $(function () {
+            $('.select2').select2()
+
+        });
+
+        $('#reservationtime').daterangepicker({
+            timePicker: true,
+            timePickerIncrement: 30,
+            locale: {
+                format: 'MM/DD/YYYY hh:mm A'
+            },
+            startDate: '@Model.Pedido.Inicio.ToString("MM/dd/yyyy hh:mm tt")',
+            endDate: '@Model.Pedido.Final.ToString("MM/dd/yyyy hh:mm tt")'
+        });
+
+        $('#reservationtime2').daterangepicker({
+            timePicker: true,
+            timePickerIncrement: 30,
+            locale: {
+                format: 'MM/DD/YYYY hh:mm A'
+            }
+        })
+
+
+        $("#dropdown").on('change', function () {
+            var getValue = $(this).val();
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: "/Clientes/RetornarDatosCliente/" + getValue,
+                success: function (result, state) {
+
+                    console.log(result);
+                    var direccion = document.getElementById("direccioncr");
+                    var telefono = document.getElementById("telefonocr");
+                    var capital = document.getElementById("customRadio1");
+                    var interior = document.getElementById("customRadio2");
+                    var facebook = document.getElementById("fbcliente");
+                    var whatsapp = document.getElementById("whatscliente");
+                    var instagram = document.getElementById("instacliente");
+
+
+                    direccion.value = result.Direccion;
+                    telefono.value = result.Telefono1;
+                    facebook.textContent = result.Facebook;
+                    whatsapp.textContent = result.Whatsapp;
+                    instagram.textContent = result.Instagram;
+
+
+                    if (result.Region == "Capital") {
+                        capital.checked = true;
+
+                    } else {
+                        interior.checked = true;
+                    }
+
+                }
+
+            });
+        });
+
+
+        //$('#dropdown').select2({});
+
+        //$('#dropdown').on("select2:opening", function(e) {
+        //                $.ajax({
+        //                contentType: 'application/json; charset=utf-8',
+        //                dataType: 'json',
+        //                type: 'GET',
+        //                url: "/Clientes/ObtenerListaClientes/",
+        //                success: function (result, state) {
+
+        //                    console.log(result);
+        //                    var s = '<option>Selecciones...</option>';
+
+        //                    for (var i = 0; i < result.length; i++) {
+        //                        s += '<option value="' + result[i].Id + '">' + result[i].Nombres + '</option>';
+        //                    }
+
+        //                    $("#dropdown").html(s);
+        //                }
+
+        //            });
+        //});
+
+
+
+        //$(document).on('focus', '.select2-search__field', function (e) {
+        //    alert("a");
+        //    $.ajax({
+        //        contentType: 'application/json; charset=utf-8',
+        //        dataType: 'json',
+        //        type: 'GET',
+        //        url: "/Clientes/ObtenerListaClientes/",
+        //        success: function (result, state) {
+
+        //            var s = '<option value="-1">Seleccione...</option>';
+
+        //            for (var i = 0; i < result.length; i++) {
+        //                s += '<option value="' + result[i].Id + '">' + result[i].Nombres + '</option>';
+        //            }
+
+        //            $("#dropdown").html(s);
+        //        }
+
+        //    });
+        //    });</script>
+
+    @*<script>
+        //var productosagregados = []
+
+        $(".agregarDetallePedido").click(function (e) {
+            e.preventDefault();
+
+
+            var parent = $(this).parent().parent()
+            var child = parent.children('td');
+            var i = 0;
+
+            var data = new Array();
+
+            child.each(function () {
+
+                switch (i) {
+                    case 0:
+                        data[0] = $(this).text();
+                        break;
+                    case 2: parent
+                        data[2] = $(this).text();
+
+                        break;
+
+                    case 3:
+                        var selecteds = $(this).children('select#cars').children("option").filter(":selected");
+                        data[3] = selecteds;
+
+                        break;
+
+                    case 4:
+                        data[4] = $(this).children('input').val();
+                        break;
+
+
+                    case 5:
+                        data[5] = $(this).text();
+                        break;
+
+                    case 6:
+                        data[6] = $(this).children('input').val();
+                        break;
+                }
+
+                i++;
+
+            });
+
+            var capvalor = parseFloat(parseFloat(data[5]).toFixed(2) * Math.floor(data[4])).toFixed(2);
+            var disc = parseFloat(data[6] / 100).toFixed(2);
+
+            var descresta = parseFloat(capvalor * disc).toFixed(2)
+            var totadesc = parseFloat(capvalor - descresta).toFixed(2);
+
+            // Asegurarnos que no hayan campos vacios. Evitamos errores y codigo largo :)
+            if (data[3].val() === "" || data[4] === "") {
+                alert("Hay campos vacíos");
+                return;
+            }
+
+
+            // Revisar si la talla tiene existencia en el inventario.
+
+            var datos = JSON.stringify({
+                cantidad: parseInt(data[4])
+            });
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                data: datos,
+                url: "/Inventario/VerificarExistencias/" + data[3].val(),
+                success: function (result, state) {
+
+                    if (result === 0) {
+
+                        //var index = $.inArray(data[0], productosagregados);
+
+                        $('#detallepedido').append("<tr>"
+                            + "<td>" + data[0] + "</td>"
+                            + "<td>" + data[2] + "</td>"
+                            + "<td>" + data[3].text() + "</td>"
+                            + "<td style='display: none;'>" + data[3].val() + "</td>"
+                            + "<td>" + Math.abs(Math.floor(data[4])) + "</td>"
+                            + "<td>" + parseFloat(Math.abs(parseFloat(data[5]))).toFixed(2) + "</td>"
+                            + "<td class='subtotal-fila'>" + capvalor + "</td>"
+                            + "<td class='desc-fila'>" + descresta + "</td>"
+                            + "<td class='tota-sub-fila'>  " + totadesc + "</td>"
+                            + "<td>" + '<a onclick="deleteRow(this)" class="btn btn-danger btn-sm text-white"><i class="fas fa-trash-alt"></i></a>' + "</td></tr>");
+
+                        //productosagregados.push(data[0]);
+                        getTotal();
+                    }
+                    else {
+                        confirm("No hay existencias, Faltan: " + result + " ¿Desea agregarlo a solicitud?");
+                    }
+                },
+                error: function () {
+                    alert("Un error interno ha ocurrido.")
+                }
+
+            });
+
+            function getTotal() {
+                var total = 0;
+                var desc = 0;
+                var subtotal = 0
+                $('.tota-sub-fila').each(function () {
+                    total += parseFloat(this.innerHTML)
+                });
+
+                $('.desc-fila').each(function () {
+                    desc += parseFloat(this.innerHTML)
+                });
+
+                $('.subtotal-fila').each(function () {
+                    subtotal += parseFloat(this.innerHTML)
+                });
+
+                $('#total-value').text(parseFloat(total).toFixed(2));
+                $('#descuento-value').text(parseFloat(desc).toFixed(2));
+                $('#subtotal-value').text(parseFloat(subtotal).toFixed(2));
+
+
+
+            }
+            //getTotal();
+        });
+
+
+        // borrar fila de tabla
+        function deleteRow(r) {
+            var i = r.parentNode.parentNode.rowIndex;
+            document.getElementById("mytablec").deleteRow(i);
+            getTotal();
+        }
+
+        function getTotal() {
+            var total = 0;
+            var desc = 0;
+            var subtotal = 0
+            $('.tota-sub-fila').each(function () {
+                total += parseFloat(this.innerHTML)
+            });
+
+            $('.desc-fila').each(function () {
+                desc += parseFloat(this.innerHTML)
+            });
+
+            $('.subtotal-fila').each(function () {
+                subtotal += parseFloat(this.innerHTML)
+            });
+
+            $('#total-value').text(parseFloat(total).toFixed(2));
+            $('#descuento-value').text(parseFloat(desc).toFixed(2));
+            $('#subtotal-value').text(parseFloat(subtotal).toFixed(2));
+        }</script>*@
+
+
+<script>
+        $("#finalizar-pedido").click(function (e) {
+            e.preventDefault();
+
+            var total = 0;
+            var table = document.getElementById("mytablec");
+
+            // verificar si el detalle esta vacio
+            if (table.rows.length <= 1) {
+                alert("Debe haber por lo menos un producto.")
+                return;
+            }
+
+            $('.reserva-value').each(function () {
+                total += parseFloat(this.innerHTML)
+            });
+
+            // revisar porque es la reserva, no la reste al final
+            //if (total !== 0) {
+            //    alert("No se puede crear pedido porque aún hay reservas. Para solventar las reservas, los productos en producción deben estar finalizados.");
+            //    return;
+            //}
+
+
+            if ($("#tipocliente :selected").val() == "cliente-recurrente") {
+
+
+                if ($("#dropdown").val().trim() == "") {
+                    alert("Debe haber por lo menos un cliente.")
+                    return;
+                }
+
+                var data = JSON.stringify({
+                    // datos de detalle
+                    Id: @Model.Pedido.Id,
+
+                });
+
+                $.when(enviar(data)).then(function (response) {
+                    console.log(response);
+                }).fail(function (err) {
+                    console.log(err);
+                });
+                 
+            }
+        });
+
+        function enviar(data) {
+            console.log(data);
+            return $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: "/Pedidos/ActualizarBorradorAPedido",
+                data: data,
+                success: function (result) {
+                    window.location.href = "/Pedidos/DetallePedido/" + result;
+                },
+                error: function () {
+                    alert("SE HA PRODUCIDO UN ERROR, REVISE SI LA INFORMACIÓN ESTA COMPLETA Y CORRECTA");
+                }
+            });
+        }
+</script>
+
+
+    <script>
+        $("#mod-cliente").click(function (e) {
+            e.preventDefault();
+
+            var component = $("#dropdown").val();
+
+            if (component == "") {
+                return;
+            }
+
+            window.open("/Clientes/ModificarContacto/" + component, 'mywin', 'width=800,height=800');
+
+            //$.ajax({
+            //    contentType: 'application/json; charset=utf-8',
+            //    dataType: 'json',
+            //    type: 'POST',
+            //    url: "/Clientes/ModificarContacto/" + component,
+            //    success: function (result, state) {
+
+
+            //    },
+            //    error: function(e){
+            //        alert("Se ha producido un error interno, vuelva a recargar la página.")
+            //    }
+
+
+            //});
+
+
+        });</script>
+
+    <script>
+        $('select#cars').change(function (e) {
+            e.preventDefault();
+
+            var tallavalue = $(this).children("option").filter(":selected");
+
+            $select = $(this),
+                $span = $select.parent().find('.existencias-talla')
+
+
+
+            var datos = JSON.stringify({
+                valuee: tallavalue.val()
+            });
+
+
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: "/Inventario/RetornarExistencia/",
+                data: datos,
+                success: function (result) {
+
+                    //$(".existencias-talla").html(result);
+                    $span.html(result);
+
+                },
+                error: function () {
+                    alert("SE HA PRODUCIDO UN ERROR, REVISE SI LA INFORMACIÓN ESTA COMPLETA Y CORRECTA");
+                }
+            });
+
+        });</script>
+
+
+
+    @*DetalleTalla*@
+
+
+    <script>
+        $(".agregarDetalleTalla").click(function (e) {
+            e.preventDefault();
+
+
+            var parent = $(this).parent().parent()
+            var child = parent.children('td');
+            var i = 0;
+
+            var data = new Array();
+
+            child.each(function () {
+
+                switch (i) {
+                    case 0:
+                        data[0] = $(this).text(); //id
+
+                        break;
+                    case 2: parent
+                        data[2] = $(this).text(); // descripcion
+
+                        break;
+
+                    case 3:
+                        var selecteds = $(this).children('select#cars').children("option").filter(":selected"); // talla
+                        data[3] = selecteds;
+
+                        break;
+
+                    case 4:
+                        data[4] = $(this).children('input').val(); // cantidad
+                        break;
+
+                    case 5:
+                        data[5] = $(this).text(); // color
+                        break;
+                }
+
+                i++;
+
+            });
+
+            if (data[4] === "" || data[3].val() === "") {
+                alert("hay campos vacíos");
+                return;
+            }
+
+            // x cantidad de veces
+            for (var i = 0; i < data[4] ; i++ ) {
+                $('#detallesolicitud').append("<tr>"
+                    + "<td>" + data[0] + "</td>"
+                    + "<td>" + data[2] + "</td>"
+                    + "<td>" + data[3].text() + "</td>"
+                    + "<td>" + data[5] + "</td>"
+                    + "<td>" + '<a onclick="deleteRow(this)" class="btn btn-danger btn-sm text-white"><i class="fas fa-trash-alt"></i></a>' + "</td></tr>");
+            }
+
+
+        });
+
+
+        $("#mandar-solicitud").click(function (e) {
+            e.preventDefault();
+
+            var table = document.getElementById("mytablec-solicitudes");
+
+            // verificar si el detalle esta vacio
+            if (table.rows.length <= 1) {
+                alert("Debe haber por lo menos un producto.")
+                return;
+            }
+
+
+            var detallesolicitud = [];
+            detallesolicitud.length = 0;
+
+
+            $.each($("#mytablec-solicitudes tbody tr"), function () {
+                detallesolicitud.push({
+                    Descripcion: $(this).find('td:eq(1)').html(),
+                    Talla: $(this).find('td:eq(2)').html(),
+                    Color: $(this).find('td:eq(3)').html(),
+                });
+            });
+
+
+            var data = JSON.stringify({
+                // datos de detalle
+                solicitudesDetalles: detallesolicitud,
+
+                //datos del pedido
+                PedidoId : @Model.Pedido.Id,
+
+            });
+
+
+            $.when(enviar_solicitud(data)).then(function (response) {
+                console.log(response);
+            }).fail(function (err) {
+                console.log(err);
+            });
+
+        });
+
+    function enviar_solicitud(data) {
+        console.log(data);
+        return $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            type: 'POST',
+            url: "/Pedidos/CrearSolicitud",
+            data: data,
+            success: function (result) {
+                alert(result);
+                //location.reload();
+            },
+            error: function () {
+                alert("SE HA PRODUCIDO UN ERROR, REVISE SI LA INFORMACIÓN ESTA COMPLETA Y CORRECTA");
+            }
+        });
+    }
+
+
+    </script>
+
+
+    <script>
+        $("#guardar-cambios-p").click(function (e) {
+            e.preventDefault();
+            $("#guardar-cambios-p").prop('disabled', true)
+
+            var fechas = ($(".fecha-entregacr").val()).split(" - ");
+            var radiochecked = "";
+            var radiocheckedTipoContacto = "";
+
+
+            // para internos y capital
+            var radios = document.getElementsByName('Pedido.Region');
+            for (var i = 0, length = radios.length; i < length; i++) {
+                if (radios[i].checked) {
+                    radiochecked = radios[i].value;
+                    break;
+                }
+            }
+
+
+            //tipo de contacto
+            var radioTipoContacto = document.getElementsByName('Pedido.ContactoPrincipal');
+            for (var i = 0, length = radioTipoContacto.length; i < length; i++) {
+                if (radioTipoContacto[i].checked) {
+                    radiocheckedTipoContacto = radioTipoContacto[i].value;
+                    break;
+                }
+            }
+
+
+            var datos = JSON.stringify({
+                Telefonoc: $("#telefonocr").val(),
+                Inicio: fechas[0],
+                Final: fechas[1],
+                Direccion: $("#direccioncr").val(),
+                Region: radiochecked,
+                ContactoPrincipal: radiocheckedTipoContacto,
+                Observacion: $("#Observacioncr").val(),
+                Id: @Model.Pedido.Id,
+
+            });
+
+            $.when(enviarr(datos)).then(function (response) {
+                @*location.href = '@Url.Action("DetallePedido", "Pedidos", new { id = Model.Pedido.Id })';*@
+                $("#guardar-cambios-p").prop('disabled', false)
+            }).fail(function (err) {
+                console.log(err);
+            });
+
+        });
+
+
+
+        function enviarr(data) {
+            console.log(data);
+
+            return $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: "/Pedidos/ActualizarDatosPedido",
+                data: data,
+                success: function (result) {
+                    //alert(result);
+                    location.reload();
+                },
+                error: function () {
+                    alert("SE HA PRODUCIDO UN ERROR, REVISE SI LA INFORMACIÓN ESTA COMPLETA Y CORRECTA");
+                }
+            });
+        }
+    </script>
+
+
+}
+
+@section select2{
+    <link rel="stylesheet" href="~/Content/select2.min.css">
+    <link rel="stylesheet" href="~/Content/daterangepicker.css">
+
+}
+
+
+

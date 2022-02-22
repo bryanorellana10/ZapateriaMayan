@@ -1,0 +1,78 @@
+﻿@model ZapateriaMayan.ViewModels.AccountSignInViewModel
+@{
+    ViewBag.Title = "SignIn";
+    Layout = "~/Views/Shared/_LoginForm.cshtml";
+}
+
+
+
+    <div class="login-box">
+
+        <!-- /.login-logo -->
+        <div class="card">
+            @Html.Partial("_Mensaje")
+
+            <div class="login-logo mt-3 mb-3">
+                <img src="~/Images/maincorazon.jpg" width="200" />
+            </div>
+            <div>
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+            </div>
+
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">Iniciar Sesión</p>
+                @using (Html.BeginForm("SignIn", "Account", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="input-group mb-3">
+                        @*<input type="email" class="form-control" placeholder="Email">*@
+
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Correo", type = "email" })
+
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        @*<input type="password" class="form-control" placeholder="Password">*@
+
+                        @Html.TextBoxFor(m => m.Password, new { @class = "form-control", type = "password", @placeholder = "Contraseña" })
+
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-8">
+                            <div class="icheck-primary">
+                                @*<input type="checkbox" id="remember">*@
+                                @Html.CheckBoxFor(m => m.RememberMe, new { @id = "remember" })
+                                <label for="remember">
+                                    Recuérdame
+                                </label>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-warning btn-block">Entrar</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                }
+            </div>
+            <!-- /.login-card-body -->
+        </div>
+    </div>
+
+
+
+

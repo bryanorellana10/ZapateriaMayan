@@ -1,0 +1,350 @@
+﻿@model  ZapateriaMayan.ViewModels.CajaCapitalViewModel
+@{ ViewBag.Title = "Apertura de Caja - Capital";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+@{ 
+}
+
+@*@Html.Partial("_Mensaje")*@
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+@using (Html.BeginForm())
+{
+<br />
+                <br />
+                                <section class="content">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-md-7" style="float:none;margin:auto;">
+                                                <!-- general form elements -->
+                                                <!-- general form elements -->
+                                                @{ var Color = ""; }
+                                                @if (ViewBag.EstadoCaja == true)
+                                                {
+                                                    Color = "card-primary";
+                                                }
+                                                else
+                                                {
+                                                    Color = "card-danger";
+                                                }
+                                                <div class="card @Color">
+                                                    <div class="card-header">
+                                                        <h3 class="card-title">Apertura de caja - Capital</h3>
+                                                    </div>
+
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <div class="form-group">
+                                                                    <label>Fecha Apertura</label>
+                                                                    @if (ViewBag.EstadoCaja == true)
+                                                                    {
+                                                    @Html.TextBoxFor(m => m.CajaCapital.FechaApertura, new { @class = "form-control", @readonly = true }) }
+                                                else
+                                                {
+                                        <input value="@ViewBag.Caja.FechaApertura" class="form-control" disabled>}
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <div class="form-group">
+                                                                    <label>Monto Apertura</label>
+                                                                    @if (ViewBag.EstadoCaja == true)
+                                                                    {
+                                                    @Html.TextBoxFor(m => m.CajaCapital.MontoApertura, new { @class = "form-control" }) }
+                                                else
+                                                {
+                                        <input value="@ViewBag.Caja.MontoApertura" class="form-control" disabled>}
+                                                                </div>
+                                                            </div>
+
+
+                                                            @*<div class="col-12">
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Número de Guía</label>
+                                @Html.TextBoxFor(m => m.DespachosInterior.NumeroGuia, new { @class = "form-control", @placeholder = "Número de Guía" })
+                            </div>
+                        </div>*@
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="card-footer">
+                                                        @if (ViewBag.EstadoCaja == true)
+                                                        {
+                                        <button type="submit" class="btn btn-primary">Abrir Caja</button> }
+                                    else
+                                    {
+                                        <button type="button" data-toggle="modal" data-target="#exampleModalCierre" class="btn btn-danger">Cerrar Caja</button>}
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+
+
+
+
+
+                                            <div class="col-md-4" style="float:none;margin:auto;">                                                
+                                                <div class="card card-info">
+                                                    <div class="card-header">
+                                                        <h3 class="card-title">Generacion de Reporte</h3>
+                                                    </div>
+
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <label>Rango</label>
+                                                 
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text"><i class="far fa-clock"></i></span>
+                                                                        </div>
+                                                                        <input type="text" class="form-control float-right fecha-entregacr" id="reservationtime">
+                                                                    </div>
+                                                                </div>
+                                                            </div>                                                            
+                                                            </div>
+                                                        </div>
+                                                    <div class="card-footer">                                                        
+                                                        <button type="button" class="btn btn-primary float-right" onclick="generarReporte()" style="margin-right: 5px;">
+                                                            <i class="fas fa-download"></i> Generar Reporte
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </section>
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="card  bg-gradient-white">
+            <div class="card-body">
+                <div class="float-right">                    
+                </div>
+                <table id="cajaCapital" class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Fecha Apertura</th>
+                            <th>Monto Apertura</th>
+                            <th>Gastos</th>
+                            <th>Ingresos</th>
+                            <th>Total cierre</th>
+                            <th>Responsable</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model.CajaCapitalsList)
+                        {
+                            if (item.EstadoCaja == true)
+                            {
+                    <tr class="bg-gradient-success">
+                        <td>@item.FechaApertura</td>
+                        <td>@item.MontoApertura</td>
+                        <td>
+
+                            @{decimal egresos = 0.00M;
+
+                                foreach (var gastos in item.DetalleCajaCapitals)
+                                {
+
+                                    egresos = egresos + gastos.Gasto;
+
+                                }}
+                            Q @egresos
+                        </td>
+                        <td>
+                            @{decimal ingresos = 0.00M;
+
+                                foreach (var ingres in item.DetalleCajaCapitals)
+                                {
+
+                                    ingresos = ingresos + ingres.Ingreso;
+
+                                }}
+                            Q @ingresos
+
+                        </td>
+                        <td>
+                            @{ var total = ingresos - egresos;}
+                            Q @total
+                        </td>
+                        <td>@item.Responsable</td>
+                        <td>
+                            <a href="@Url.Action("VerDetalleCajaCapital","Caja", new { id = item.Id })" class="btn btn-primary btn-sm">Ver Detalle</a>
+                        </td>
+
+                    </tr> }
+                                    else
+                                    {
+                                        <tr>
+                                            <td>@item.FechaApertura</td>
+                                            <td>@item.MontoApertura</td>
+                                            <td>
+
+                                                @{decimal egresos = 0.00M;
+
+                                                    foreach (var gastos in item.DetalleCajaCapitals)
+                                                    {
+
+                                                        egresos = egresos + gastos.Gasto;
+
+                                                    }}
+                                                Q @egresos
+                                            </td>
+                                            <td>
+                                                @{decimal ingresos = 0.00M;
+
+                                                    foreach (var ingres in item.DetalleCajaCapitals)
+                                                    {
+
+                                                        ingresos = ingresos + ingres.Ingreso;
+
+                                                    }}
+                                                Q @ingresos
+
+                                            </td>
+                                            <td>
+                                                @{ var total = ingresos - egresos;}
+                                                Q @total
+                                            </td>
+                                            <td>@item.Responsable</td>
+                                            <td>
+                                                <a href="@Url.Action("VerDetalleCajaCapital","Caja", new { id = item.Id })" class="btn btn-primary btn-sm">Ver Detalle</a>
+                                            </td>
+
+                                        </tr>
+                                    }
+
+
+                                }
+
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Fecha Apertura</th>
+                            <th>Monto Apertura</th>
+                            <th>Gastos</th>
+                            <th>Ingresos</th>
+                            <th>Total cierre</th>
+                            <th>Responsable</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+<div class="modal fade" id="exampleModalCierre" tabindex="-1" role="dialog" aria-labelledby="exampleModalCierre" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-gradient-danger">
+                <h5 class="modal-title" id="exampleModalLongTitle">¿Está seguro/a que desea cerrar esta caja?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="AddDetailButton" onclick="CerrarCajaCapital()">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section scripts{
+
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Scripts/dataTables.responsive.min.js"></script>
+    <script src="~/Scripts/select2.full.min.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+
+    <script src="~/Scripts/daterangepicker.js"></script>
+    <script src="~/Scripts/tempusdominus-bootstrap-4.min.js"></script>
+
+    <script>
+        $("#cajaCapital").DataTable({
+            "responsive": true,
+            "autoWidth": false,
+            "order": [[0, "desc"]],
+            "language": {
+                url: "//cdn.datatables.net/plug-ins/1.10.21/i18n/Spanish.json"
+            }
+        });
+
+       function CerrarCajaCapital() {
+            $("#AddDetailButtonE").prop('disabled', true)
+
+            $.ajax({
+                type: "post",
+                url: '@Url.Action("CerrarCajaCapital","Caja")',
+                contenttype: 'application/json; charset=utf-8',
+                datatype: 'json',
+                error: function () {
+                    alert("No se ha podido hacer la operación.");
+                    $('#exampleModalLong').modal('hide');
+                    $("#AddDetailButtonE").prop('disabled', false)
+                },
+                success: function (result) {
+                    $("#AddDetailButtonE").prop('disabled', false)
+                    $('#exampleModalLong').modal('hide');
+                    alert("La caja se ha cerrado.");
+                    window.location.href ="/Caja/IndexCajaCapital"
+
+                }
+            });
+
+       }
+
+        $('#reservationtime').daterangepicker({
+            timePicker: true,
+            timePickerIncrement: 30,
+            locale: {
+                format: 'DD/MM/YYYY'
+            }
+        });
+
+
+        function generarReporte() {
+            var fechas = $('#reservationtime').val().split('-')
+            var fechaInicio = fechas[0]
+            var fechaFin = fechas[1]
+
+            
+            location.href = '@Url.Action("ReporteCaja", "Caja")?fechaInicio=' + fechaInicio + '&fechaFin=' + fechaFin;
+            
+
+
+        }
+
+
+
+    </script>
+
+}
+@section select2{
+    <link rel="stylesheet" href="~/Content/select2.min.css">
+    <link rel="stylesheet" href="~/Content/daterangepicker.css">
+
+}

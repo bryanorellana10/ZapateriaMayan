@@ -1,0 +1,156 @@
+﻿@model ZapateriaMayan.ViewModels.CajaCapitalViewModel
+
+@{ ViewBag.Title = "ReporteCaja";
+    Layout = "~/Views/Shared/_LayoutPedidoDetalle.cshtml";
+}
+
+@{ decimal TotalIngresos = 0.00M; decimal TotalEgresos = 0.00M; decimal TotalReal = 0.00M;
+    decimal TotalIngresosI = 0.00M; decimal TotalEgresosE = 0.00M;
+    }
+
+
+<div style="padding-left: 0.5%;padding-right: 0.5%">
+    <img src="~/Images/logoss.jpg" />
+    <div class="text-center">
+        <h3>Reporte Caja</h3>
+    </div>
+    <br />
+    <br />
+
+    <h4>Ventas</h4>
+    <hr />
+    <table class="table table-bordered" style="padding-left:20px;padding-right:20px">
+        <thead>
+            <tr>
+                <th># Venta</th>
+                <th># Pedido</th>
+                <th>Ruta</th>
+                <th>Cliente</th>
+                <th>Vend.</th>
+                <th>Mens</th>
+                <th>Egreso Ent.</th>
+                <th>Precio Producto</th>
+                <th>Ingreso Real</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CajaCapital.DetalleCajaCapitals.Where(a => a.VentasCapitalId != null || a.VentasCapitalId > 0))
+            {
+                TotalIngresos = TotalIngresos + item.Ingreso;
+                TotalEgresos = TotalEgresos + item.Gasto;
+                var ValorReal = item.Ingreso - item.Gasto;
+                TotalReal = TotalReal + ValorReal;
+<tr>
+    <td><span> @item.VentasCapitalId</span></td>
+    <td>@item.VentasCapital.DespachosCapital.PedidoId</td>
+    <td>@item.VentasCapital.DespachosCapital.EnviosCapitals.SingleOrDefault().Rutas.Descripcion</td>
+    <td>@item.VentasCapital.DespachosCapital.Pedido.Cliente.Nombres</td>
+    <td>@item.VentasCapital.DespachosCapital.Pedido.Vendedor</td>
+    <td>@item.VentasCapital.DespachosCapital.EnviosCapitals.SingleOrDefault().Despachador.Nombres</td>
+    <td>Q @item.Gasto</td>
+    <td>
+        Q @item.Ingreso
+    </td>
+    <td>Q @ValorReal</td>
+</tr>
+}
+
+            <tr>
+                <td colspan="6"><strong>TOTAL</strong></td>
+                <td>Q @TotalEgresos</td>
+                <td>Q @TotalIngresos</td>
+                <td>Q @TotalReal</td>
+            </tr>
+        </tbody>
+
+
+    </table>
+
+    <br />
+    <br />
+    <h4>Ingresos</h4>
+    <hr />
+
+    <table id="IngresosManuales" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Descripción Ingresos (Otros)</th>
+                <th>Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CajaCapital.DetalleCajaCapitals.Where(a => a.Ingreso > 0 && (a.VentasCapitalId == null)))
+            {
+                TotalIngresosI = TotalIngresosI + item.Ingreso;
+<tr>
+    <td>@item.Descripcion</td>
+    <td>Q @item.Ingreso</td>
+</tr>}
+            <tr>
+                <td><strong>TOTAL</strong></td>
+                <td>Q @TotalIngresosI</td>
+
+            </tr>
+        </tbody>
+    </table>
+
+
+    <br />
+    <br />
+    <h4>Egresos</h4>
+    <hr />
+
+    <table id="EgresosManuales" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Descripción Egresos (Otros)</th>
+                <th>Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CajaCapital.DetalleCajaCapitals.Where(a => a.Gasto > 0 && (a.VentasCapitalId == null)))
+            {
+                TotalEgresosE = TotalEgresosE + item.Gasto;
+<tr>
+    <td>@item.Descripcion</td>
+    <td>Q @item.Gasto</td>
+
+</tr>
+}
+            <tr>
+                <td><strong>TOTAL</strong></td>
+                <td>Q @TotalEgresosE</td>
+
+            </tr>
+        </tbody>
+
+    </table>
+
+    <br />
+    <br />
+    <h4>Resumen</h4>
+    <hr />
+
+    <table id="EgresosManuales" class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Ingresos</th>
+                <th>Egresos</th>
+                <th>Cierre Caja</th>
+            </tr>
+        </thead>
+        <tbody>          
+            <tr>
+                <td>@{var Ing = TotalIngresos + TotalIngresosI;} Q @Ing</td>
+                <td>@{var Egr = TotalEgresos + TotalEgresosE;}Q @Egr</td>
+                <td>@{var Tot = Ing - Egr;} Q @Tot</td>
+
+            </tr>
+        </tbody>
+
+    </table>
+
+
+
+
+</div>
